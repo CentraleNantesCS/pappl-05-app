@@ -1,9 +1,13 @@
 import React from 'react';
+import Login from '../components/forms/Login'
 
-function Login() {
+
+function LoginView() {
   return (
-    <div className="m-auto text-5xl font-bold">Login</div>
+    <div className="flex w-full min-h-screen">
+      <Login />
+    </div>
   );
 }
 
-export default Login;
+export default LoginView;

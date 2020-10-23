@@ -1,8 +1,11 @@
 {
 	"folders": [
-		{
-			"path": ".."
-		}
+    {
+      "path": ".."
+    },
+    {
+      "path": "Z:\\PHP\\www\\pappl"
+    }
   ],
   "settings": {
     "css.validate": false,
