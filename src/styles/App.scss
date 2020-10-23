@@ -1,0 +1,11 @@
+.App {
+  @apply flex flex-col w-full h-full min-h-screen pl-4;
+
+  nav {
+    @apply flex w-1/3;
+
+    a {
+      @apply pr-4;
+    }
+  }
+}

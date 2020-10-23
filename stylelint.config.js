@@ -1,19 +1,27 @@
 module.exports = {
   extends: ["stylelint-config-standard"],
   rules: {
-    "at-rule-no-unknown": [
+    'no-empty-source': null,
+    'rule-empty-line-before': null,
+    'no-missing-end-of-source-newline': null,
+    'at-rule-no-unknown': [
       true,
       {
         ignoreAtRules: [
-          "tailwind",
-          "apply",
-          "variants",
-          "responsive",
-          "screen",
-        ],
-      },
+          'tailwind',
+          'apply',
+          'extends',
+          'variants',
+          'responsive',
+          'screen',
+          'import'
+        ]
+      }
     ],
-    "declaration-block-trailing-semicolon": null,
-    "no-descending-specificity": null,
-  },
+    'declaration-block-trailing-semicolon': null,
+    'no-descending-specificity': null,
+    indentation: [2],
+    'block-no-empty': null,
+    'unit-allowed-list': ['em', 'rem', 's', 'px', 'vh', 'vw', '%', 'deg', 'ms']
+  }
 };
