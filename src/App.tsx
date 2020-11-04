@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,16 +8,25 @@ import {
 import Home from './views/Home';
 import Login from './views/Login';
 import "./styles/App.scss"
-import { StateProvider } from './utils/state';
+import { useStateContext } from './utils/state';
+import { ActionType } from './utils/reducer';
+
+
 
 function App() {
+  const { state, dispatch } = useStateContext();
+  useEffect(() => {
+    dispatch && dispatch!({ type: ActionType.GET_USER });
+    return () => {}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <StateProvider>
       <Router>
         <div className="App">
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
+            {!state.isAuthenticated && <Link to="/login">Login</Link>}
           </nav>
           <Switch>
             <Route exact path="/">
@@ -29,7 +38,6 @@ function App() {
           </Switch>
         </div>
       </Router>
-    </StateProvider>
   );
 }
 

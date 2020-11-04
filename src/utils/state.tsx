@@ -1,6 +1,6 @@
 import React, { useContext, useReducer, createContext } from 'react';
-import { reducer, Action } from './reducer';
-import {User} from '../models/User'
+import { reducer, Action, ActionType } from './reducer';
+import { getConnectedUser, User } from '../models/User';
 
 export interface StateContext {
   isAuthenticated: boolean;
@@ -12,15 +12,26 @@ export interface Store {
   dispatch?: React.Dispatch<Action>;
 }
 
-const defaultState: StateContext = { isAuthenticated: false, user: null};
-const Context = createContext<Store>({state: defaultState});
+const defaultState: StateContext = { isAuthenticated: false, user: null };
+const Context = createContext<Store>({ state: defaultState });
 
 export const useStateContext = () => useContext(Context);
 
 export const StateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
-  const value = { state, dispatch };
-  return (
-    <Context.Provider value={value} children={children} />
-  );
+
+  const asyncDispatch = async (action: Action) => {
+    switch (action.type) {
+      case ActionType.GET_USER:
+        const payload = await getConnectedUser();
+        dispatch({ ...action, payload });
+        break;
+
+      default:
+        dispatch(action);
+        break;
+    }
+  };
+
+  return <Context.Provider value={{ state, dispatch: asyncDispatch }} children={children} />;
 };

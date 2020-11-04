@@ -4,9 +4,12 @@ import './styles/index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { StateProvider } from './utils/state';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StateProvider>
+    <App /></StateProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
