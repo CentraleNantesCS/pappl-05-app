@@ -26,7 +26,11 @@ export const StateProvider = ({ children }: any) => {
         const payload = await getConnectedUser();
         dispatch({ ...action, payload });
         break;
-
+      case ActionType.SIGN_OUT:
+        // Save token to localstorage
+        localStorage.removeItem('token');
+        dispatch(action);
+        break;
       default:
         dispatch(action);
         break;

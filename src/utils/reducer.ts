@@ -12,7 +12,7 @@ export type Action = { type: ActionType, payload?: any };
 export const reducer = (state: StateContext, action: Action) => {
   switch (action.type) {
     case ActionType.SIGN_OUT:
-      return { ...state, isAuthenticated: false };
+      return { ...state, isAuthenticated: false , user: null};
     case ActionType.GET_USER:
       const { isAuthenticated, user } = action.payload!;
       return {...state, isAuthenticated, user}
