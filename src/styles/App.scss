@@ -7,7 +7,7 @@
 }
 
 .card {
-  @apply px-4 pt-8 pb-4 bg-white shadow;
+  @apply px-4 pt-8 pb-4 bg-white shadow-sm;
 }
 
 @media not print {
@@ -19,3 +19,5 @@
     border-radius: inherit;
   }
 }
+
+

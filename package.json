@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^5.7.0",
+    "@material-ui/data-grid": "^4.0.0-alpha.10",
     "@tailwindcss/custom-forms": "^0.2.1",
     "@types/jest": "^26.0.15",
     "@types/material-ui": "^0.21.8",
@@ -55,13 +56,14 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.6",
-    "autoprefixer": "^10.0.1",
+    "autoprefixer": "^10.0.2",
     "node-sass": "^4.14.1",
+    "postcss": "^8.1.10",
     "postcss-cli": "^8.1.0",
     "postcss-nested": "^5.0.1",
     "stylelint": "^13.7.2",
     "stylelint-config-standard": "^20.0.0",
-    "tailwindcss": "^1.9.5",
+    "tailwindcss": "^2.0.1",
     "tailwindcss-plugin-delight": "^0.2.4"
   }
 }

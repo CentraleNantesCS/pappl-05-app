@@ -4,11 +4,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { UisBars } from '@iconscout/react-unicons-solid';
 import { useStateContext } from '../../utils/state';
 import { ActionType } from '../../utils/reducer';
 import { Link } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
+import MenuIcon from '@material-ui/icons/Menu';
 
 function App(props: { children: React.ReactNode }) {
   const { state, dispatch } = useStateContext();
@@ -34,7 +34,7 @@ function App(props: { children: React.ReactNode }) {
         <AppBar position="static" className="flex-1">
           <Toolbar className="flex">
             <IconButton edge="start" color="inherit" aria-label="menu">
-              <UisBars color="#fff" />
+            <MenuIcon />
             </IconButton>
             <Typography variant="h6" className="flex-1 text-4xl">
               <Link to="/">PAPPL 05</Link>

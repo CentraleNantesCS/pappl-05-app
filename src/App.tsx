@@ -8,6 +8,7 @@ import { useStateContext } from './utils/state';
 import { ActionType } from './utils/reducer';
 
 import MainLayout from './components/layout/Main';
+import Users from './views/Users';
 
 function App() {
   const { dispatch } = useStateContext();
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/calendar">
             <Calendar />
+          </Route>
+          <Route path="/users">
+            <Users/>
           </Route>
         </Switch>
       </MainLayout>
