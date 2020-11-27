@@ -64,7 +64,7 @@ function Users() {
   }));
 
   const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);

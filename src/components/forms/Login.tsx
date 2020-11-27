@@ -44,10 +44,13 @@ export default function Login() {
   }
 
   return (
-    <div className="w-1/3 m-auto card sm:rounded-lg sm:px-10">
+    <div className="lg:w-2/5 md:w-2/3 sm:w-2/3  m-auto card sm:rounded-lg sm:px-10 flex flex-col">
+      <div className="text-3xl mx-auto py-4 mb-10">
+        Connexion
+      </div>
       {loginErrors &&
         <div
-          className="flex items-center px-4 py-3 mb-4 text-sm font-bold text-white bg-red-500"
+          className="flex items-center px-4 pSe connectery-3 mb-4 text-sm font-bold text-white bg-red-500"
           role="alert"
         >
           <svg
@@ -65,7 +68,7 @@ export default function Login() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email"
-          className="block text-sm font-medium leading-5 text-gray-700">Email address</label>
+          className="block text-sm font-medium leading-5 text-gray-700">Email</label>
 
         <div className="mt-1 rounded-md shadow-sm">
           <input type="email" ref={register({ required: true })}  className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" name="email" id="email" placeholder="Email" />
@@ -75,10 +78,10 @@ export default function Login() {
         {!showForgotPass &&
           <div className="mt-6">
             <label htmlFor="password"
-              className="block text-sm font-medium leading-5 text-gray-700" >Password</label>
+              className="block text-sm font-medium leading-5 text-gray-700" >Mot de passe</label>
 
             <div className="mt-1 rounded-md shadow-sm">
-              <input ref={register({ required: true })} autoFocus type="password" className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" name="password" id="password" placeholder="Password" />
+              <input ref={register({ required: true })} autoFocus type="password" className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" name="password" id="password" placeholder="Mot de passe" />
             </div>
             {errors.password && <span className="mt-2 text-sm text-red-600">Password is is required</span>}
           </div>
@@ -107,14 +110,14 @@ export default function Login() {
           {!showForgotPass &&
             <div className="text-sm leading-5">
               <div onClick={() => setShowForgotPass(true)} className="font-medium text-indigo-600 transition duration-150 ease-in-out cursor-pointer hover:text-indigo-500 focus:outline-none focus:underline">
-                Forgot your password?
+                Mot de passe oublié?
             </div>
             </div>
           }
           {showForgotPass &&
             <div className="text-sm leading-5">
               <div onClick={() => setShowForgotPass(false)} className="font-medium text-indigo-600 transition duration-150 ease-in-out cursor-pointer hover:text-indigo-500 focus:outline-none focus:underline">
-                Oh I remember it ?
+                Non c'est bon?
             </div>
             </div>
           }
@@ -123,7 +126,7 @@ export default function Login() {
         <div className="my-2">
           <span className="block w-full rounded-md shadow-sm">
             <button className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700" name="login" type="submit" ref={register}>
-              {showForgotPass ? "Forgot Password" : "Sign in"}
+              {showForgotPass ? "Réinitialiser mon mot de passe" : "Se connecter"}
             </button>
           </span>
         </div>
