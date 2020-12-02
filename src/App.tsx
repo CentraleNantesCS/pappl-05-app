@@ -9,6 +9,8 @@ import { ActionType } from './utils/reducer';
 
 import MainLayout from './components/layout/Main';
 import Users from './views/Users';
+import Specialisations from './views/Specialisations';
+import Subjects from './views/Subjects';
 
 function App() {
   const { dispatch } = useStateContext();
@@ -34,6 +36,12 @@ function App() {
           </Route>
           <Route path="/users">
             <Users/>
+          </Route>
+          <Route path="/specs">
+            <Specialisations/>
+          </Route>
+          <Route path="/subs">
+            <Subjects/>
           </Route>
         </Switch>
       </MainLayout>
