@@ -70,11 +70,6 @@ function App(props: { children: React.ReactNode }) {
       text: "Utilisateurs",
       icon: PersonIcon,
       path: "/users"
-    },
-    {
-      text: "Roles",
-      icon: PersonIcon,
-      path: "/roles"
     }
   ]
   const guestMenu = [
@@ -132,10 +127,10 @@ function App(props: { children: React.ReactNode }) {
           {!state.isAuthenticated  && guestMenu.map((menuItem) => {
             const Icon = menuItem.icon
             return (
-              <Link to={menuItem.path}>
-                <ListItem button key={menuItem.text}>
-                    {Icon && <ListItemIcon><Icon /></ListItemIcon>}
-                  <ListItemText primary={menuItem.text} />
+              <Link to={menuItem.path} key={menuItem.path}>
+                <ListItem button key={menuItem.path}>
+                    {Icon && <ListItemIcon key={menuItem.path}><Icon /></ListItemIcon>}
+                  <ListItemText primary={menuItem.text} key={menuItem.path} />
                 </ListItem>
               </Link>
             )

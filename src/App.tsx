@@ -12,6 +12,8 @@ import Users from './views/Users';
 import Specialisations from './views/Specialisations';
 import Subjects from './views/Subjects';
 
+import { ReactQueryDevtools } from 'react-query-devtools'
+
 function App() {
   const { dispatch } = useStateContext();
 
@@ -37,14 +39,15 @@ function App() {
           <Route path="/users">
             <Users/>
           </Route>
-          <Route path="/specs">
+          <Route path="/specialisations">
             <Specialisations/>
           </Route>
-          <Route path="/subs">
+          <Route path="/subjects">
             <Subjects/>
           </Route>
         </Switch>
       </MainLayout>
+      <ReactQueryDevtools initialIsOpen />
     </Router>
   );
 }

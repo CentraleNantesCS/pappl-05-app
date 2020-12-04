@@ -2,6 +2,7 @@ import axios from '../utils/axios';
 
 
 export interface User {
+  id?: number;
   email: string;
 }
 
