@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
+import axios from '../utils/axios';
 import {
   AppointmentModel,
   ViewState,
@@ -19,6 +20,10 @@ import {
   AppointmentTooltip,
   AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
+
+import { useQuery, QueryCache, ReactQueryCacheProvider } from 'react-query'
+
+const queryCache = new QueryCache()
 
 const appointments: Array<AppointmentModel> = [
   {
@@ -50,26 +55,32 @@ const Calendar: React.FunctionComponent = () => {
     '2020-11-20'
   );
 
+   console.log(this.props.match.params.id || 'lol')
+
+
+
   return (
-    <Paper className="h-full">
-      <Scheduler data={appointments}>
-        <ViewState
-          currentDate={currentDate}
-          onCurrentDateChange={setCurrentDate}
-        />
-        <DayView startDayHour={7} endDayHour={12} />
-        <WeekView startDayHour={10} endDayHour={19} />
-        <MonthView />
-        <Toolbar />
-        <ViewSwitcher />
-        <DateNavigator />
-        <TodayButton />
-        <Appointments />
-        <AppointmentTooltip showCloseButton showOpenButton />
-        <AppointmentForm readOnly />
-        <Resources data={resources} />
-      </Scheduler>
-    </Paper>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Paper className="h-full">
+        <Scheduler data={appointments}>
+          <ViewState
+            currentDate={currentDate}
+            onCurrentDateChange={setCurrentDate}
+          />
+          <DayView startDayHour={7} endDayHour={12} />
+          <WeekView startDayHour={10} endDayHour={19} />
+          <MonthView />
+          <Toolbar />
+          <ViewSwitcher />
+          <DateNavigator />
+          <TodayButton />
+          <Appointments />
+          <AppointmentTooltip showCloseButton showOpenButton />
+          <AppointmentForm readOnly />
+          <Resources data={resources} />
+        </Scheduler>
+      </Paper>
+    </ReactQueryCacheProvider>
   );
 };
 

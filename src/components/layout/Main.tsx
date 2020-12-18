@@ -63,7 +63,7 @@ function App(props: { children: React.ReactNode }) {
     {
       text: "Emploi du temps",
       icon: PersonIcon,
-      path: "/calendar",
+      path: "/calendars",
       divider: true
     },
     {

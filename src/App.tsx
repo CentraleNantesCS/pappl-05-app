@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './views/Home';
+import Calendars from './views/Calendars';
 import Calendar from './views/Calendar';
 import Login from './views/Login';
 import './styles/App.scss';
@@ -33,9 +34,10 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/calendar">
-            <Calendar />
+          <Route path="/calendars">
+            <Calendars />
           </Route>
+          <Route path="/calendar/:id" component={Calendar} />
           <Route path="/users">
             <Users/>
           </Route>
