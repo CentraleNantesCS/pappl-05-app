@@ -37,7 +37,9 @@ function App() {
           <Route path="/calendars">
             <Calendars />
           </Route>
-          <Route path="/calendar/:id" component={Calendar} />
+          <Route path="/calendar/:id" render={({match}) => (
+            <Calendar id={match.params.id} />
+          )}/>
           <Route path="/users">
             <Users/>
           </Route>

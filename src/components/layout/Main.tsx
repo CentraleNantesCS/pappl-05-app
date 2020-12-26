@@ -114,7 +114,7 @@ function App(props: { children: React.ReactNode }) {
           {state.isAuthenticated  && menu.map((menuItem) => {
             const Icon = menuItem.icon
             return (
-              <Link to={menuItem.path}>
+              <Link to={menuItem.path} key={menuItem.text}>
                 <ListItem button key={menuItem.text}>
                     {Icon && <ListItemIcon><Icon /></ListItemIcon>}
                   <ListItemText primary={menuItem.text} />

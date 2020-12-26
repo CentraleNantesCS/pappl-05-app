@@ -31,7 +31,6 @@ function Calendars() {
   };
 
   const handleClose = () => {
-
     setOpen(false);
   };
 
