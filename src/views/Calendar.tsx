@@ -28,7 +28,7 @@ import {
   AppointmentForm,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-import { useQuery, QueryCache, ReactQueryCacheProvider, useQueryCache } from 'react-query'
+import { useQuery, QueryCache, ReactQueryCacheProvider, useQueryCache, useMutation } from 'react-query'
 import { Event as CalendarEvent } from '../models/Event';
 import { Subject } from '../models/Subject';
 import { EventType } from '../models/EventType';
@@ -70,7 +70,6 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
     )
   )
 
-  //To modify the data structure for the option field
   let subjectTypes: SchedulerAppointementType[] = [];
   if (!subjectsQuery.isLoading && !subjectsQuery.isError) {
     subjectsQuery.data.forEach((sub: Subject) => {
@@ -119,8 +118,8 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
       return {
         startDate: event.start,
         endDate: event.end,
-        title: `${event.eventType} - ${event.subject.acronym} - ${event.remote ? 'dist' :''}`,
-        type: event.subject.acronym,
+        title: `${event.eventType.acronym} - ${event.subject.acronym}${event.remote ? ' - dist' :''}`,
+        type: String(event.subject.id),
         allDay: false,
         id: event.id,
         subject_id: event.subject.id,
@@ -132,8 +131,55 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
 
   const appointments: Array<AppointmentModel> = eventsToAppointements(calendarQuery.data?.events ?? [])
 
-  const commitChanges = ({ added, changed, deleted }: ChangeSet) => {
+  const [addEvent] = useMutation(async ({ startDate, endDate, event_type_id, remote, subject_id }: AppointmentModel) => {
+    const res = await axios.post(`/api/events`, { startDate, endDate, eventTypeId:event_type_id, remote, subjectId: subject_id, calendarId: calendarID });
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getCalendar')
+    },
+  })
+
+  const [updateEvent] = useMutation(async ({id, startDate, endDate, event_type_id, remote, subject_id }: AppointmentModel) => {
+    const res = await axios.put(`/api/events/${id}`, { startDate, endDate, eventTypeId:event_type_id, remote, subjectId: subject_id, calendarId: calendarID });
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getCalendar')
+    },
+  })
+
+  const [deleteEvent] = useMutation(async (id: number) => {
+    const res = await axios.delete(`/api/events/${id}`);
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getCalendar')
+    },
+  })
+
+  const commitChanges = async ({ added, changed, deleted }: ChangeSet) => {
     console.log(added, changed, deleted)
+    if(added){
+      // Add event to DB
+      addEvent(added as AppointmentModel)
+    }
+    if(changed){
+      //Update all the updated events
+      for(let eventId of Object.keys(changed)){
+        const updatedEvent = {
+          ...appointments.find((event: AppointmentModel) => event.id!.toString() === eventId.toString()),
+          ...changed[eventId]
+        }
+        await updateEvent(updatedEvent as AppointmentModel)
+      }
+    }
+    if (deleted !== undefined) {
+      await deleteEvent(Number(deleted))
+    }
   }
   
   const EventFormLayout = ({ onFieldChange, appointmentData, ...restProps }: AppointmentForm.BasicLayoutProps) => {
