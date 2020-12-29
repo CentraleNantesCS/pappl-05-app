@@ -50,11 +50,6 @@ function App(props: { children: React.ReactNode }) {
       path: "/subjects"
     },
     {
-      text: "Périodes",
-      icon: PersonIcon,
-      path: "/periods"
-    },
-    {
       text: "Options",
       icon: PersonIcon,
       path: "/specialisations",

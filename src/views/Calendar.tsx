@@ -32,13 +32,14 @@ import { useQuery, QueryCache, ReactQueryCacheProvider, useQueryCache, useMutati
 import { Event as CalendarEvent } from '../models/Event';
 import { Subject } from '../models/Subject';
 import { EventType } from '../models/EventType';
+import { User } from '../models/User';
 
 const queryCache = new QueryCache()
 
 interface CalendarProps {
   id: number;
 }
-interface SchedulerAppointementType{
+interface SchedulerAppointementType {
   id: string
   text: string
   color: string
@@ -70,34 +71,54 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
     )
   )
 
+  const hostsQuery = useQuery('getHosts', () =>
+    axios.get('/api/users').then(res =>
+      res.data
+    )
+  )
+
   let subjectTypes: SchedulerAppointementType[] = [];
   if (!subjectsQuery.isLoading && !subjectsQuery.isError) {
     subjectsQuery.data.forEach((sub: Subject) => {
-      subjectTypes.push({ 
+      subjectTypes.push({
         id: String(sub.id || -1),
         text: sub.acronym,
         color: STC.default(sub.acronym)
-       })
+      })
     })
   }
-  
+
   let subjects: SelectOption[] = [];
   if (!subjectsQuery.isLoading && !subjectsQuery.isError) {
     subjectsQuery.data.forEach((sub: Subject) => {
-      subjects.push({ 
+      subjects.push({
         text: `${sub.acronym}-${sub.name}`,
-        id: sub.id || -1, 
-       })
+        id: sub.id || -1,
+      })
     })
   }
-  
+
   let eventTypes: SelectOption[] = [];
   if (!eventTypesQuery.isLoading && !eventTypesQuery.isError) {
     eventTypesQuery.data.forEach((e: EventType) => {
-      eventTypes.push({ 
+      eventTypes.push({
         text: `${e.acronym}-${e.name}`,
-        id: e.id || -1, 
-       })
+        id: e.id || -1,
+      })
+    })
+  }
+
+
+  const fullNameOrAcronym = (u: User) => {
+    return u.acronym ? u.acronym : `${u.firstname} ${u.lastname}`
+  }
+  let hosts: SelectOption[] = [];
+  if (!hostsQuery.isLoading && !hostsQuery.isError) {
+    hostsQuery.data.forEach((e: User) => {
+      hosts.push({
+        text: fullNameOrAcronym(e),
+        id: e.id || -1,
+      })
     })
   }
 
@@ -108,8 +129,6 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
       instances: subjectTypes,
     },
   ];
-  
-  
   // Cache
   const cache = useQueryCache()
 
@@ -118,12 +137,13 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
       return {
         startDate: event.start,
         endDate: event.end,
-        title: `${event.eventType.acronym} - ${event.subject.acronym}${event.remote ? ' - dist' :''}`,
+        title: `${event.eventType.acronym} - ${event.subject.acronym}${event.host ? ' - ' + fullNameOrAcronym(event.host) : ''}${event.remote ? ' - dist' : ''}`,
         type: String(event.subject.id),
         allDay: false,
         id: event.id,
         subject_id: event.subject.id,
         event_type_id: event.eventType.id,
+        user_id: event?.host?.id || null,
         remote: event.remote
       }
     })
@@ -131,8 +151,8 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
 
   const appointments: Array<AppointmentModel> = eventsToAppointements(calendarQuery.data?.events ?? [])
 
-  const [addEvent] = useMutation(async ({ startDate, endDate, event_type_id, remote, subject_id }: AppointmentModel) => {
-    const res = await axios.post(`/api/events`, { startDate, endDate, eventTypeId:event_type_id, remote, subjectId: subject_id, calendarId: calendarID });
+  const [addEvent] = useMutation(async ({ startDate, endDate, event_type_id, remote, subject_id, user_id }: AppointmentModel) => {
+    const res = await axios.post(`/api/events`, { startDate, endDate, eventTypeId: event_type_id, remote, subjectId: subject_id, calendarId: calendarID, userId: user_id });
     return res.data;
   }, {
     onSuccess: (data) => {
@@ -141,8 +161,8 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
     },
   })
 
-  const [updateEvent] = useMutation(async ({id, startDate, endDate, event_type_id, remote, subject_id }: AppointmentModel) => {
-    const res = await axios.put(`/api/events/${id}`, { startDate, endDate, eventTypeId:event_type_id, remote, subjectId: subject_id, calendarId: calendarID });
+  const [updateEvent] = useMutation(async ({ id, startDate, endDate, event_type_id, remote, subject_id, user_id }: AppointmentModel) => {
+    const res = await axios.put(`/api/events/${id}`, { startDate, endDate, eventTypeId: event_type_id, remote, subjectId: subject_id, calendarId: calendarID, userId: user_id });
     return res.data;
   }, {
     onSuccess: (data) => {
@@ -163,13 +183,13 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
 
   const commitChanges = async ({ added, changed, deleted }: ChangeSet) => {
     console.log(added, changed, deleted)
-    if(added){
+    if (added) {
       // Add event to DB
       addEvent(added as AppointmentModel)
     }
-    if(changed){
+    if (changed) {
       //Update all the updated events
-      for(let eventId of Object.keys(changed)){
+      for (let eventId of Object.keys(changed)) {
         const updatedEvent = {
           ...appointments.find((event: AppointmentModel) => event.id!.toString() === eventId.toString()),
           ...changed[eventId]
@@ -181,25 +201,27 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
       await deleteEvent(Number(deleted))
     }
   }
-  
+
   const EventFormLayout = ({ onFieldChange, appointmentData, ...restProps }: AppointmentForm.BasicLayoutProps) => {
     const onSubjectChange = (nextValue: React.ReactText) => {
       onFieldChange({ subject_id: nextValue, type: String(nextValue) });
     };
-    const onRemoteChange =(nextValue: any) => {
-      onFieldChange({remote: nextValue})
+    const onRemoteChange = (nextValue: any) => {
+      onFieldChange({ remote: nextValue })
     }
-    const onEventTypeChange =(nextValue: any) => {
-      onFieldChange({event_type_id: nextValue})
+    const onEventTypeChange = (nextValue: any) => {
+      onFieldChange({ event_type_id: nextValue })
     }
-    
+    const onHostChange = (nextValue: any) => {
+      onFieldChange({ user_id: nextValue })
+    }
+
     return (
       <AppointmentForm.BasicLayout
         appointmentData={appointmentData}
         onFieldChange={onFieldChange}
         {...restProps}
       >
-
         <h4 className="text-xl font-bold mt-4 mb-2">Information sur la séance</h4>
 
         <AppointmentForm.Label
@@ -226,6 +248,19 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
           onValueChange={onEventTypeChange}
           availableOptions={eventTypes}
           placeholder="Type Séance"
+          type="outlinedSelect"
+        />
+
+        <AppointmentForm.Label
+          text="Intervenant"
+          type="titleLabel"
+        />
+
+        <AppointmentForm.Select
+          value={appointmentData.host_id}
+          onValueChange={onHostChange}
+          availableOptions={hosts}
+          placeholder="Intervenant"
           type="outlinedSelect"
         />
 

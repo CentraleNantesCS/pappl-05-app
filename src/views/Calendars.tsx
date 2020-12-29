@@ -81,7 +81,7 @@ function Calendars() {
   //To modify the data structure for the option field
   let optionsSpecialisation: OptionTypeBase[] = [];
   if (!specialisationsQuery.isLoading && !specialisationsQuery.isError) {
-    specialisationsQuery.data.map((sub: Specialisation) => {
+    specialisationsQuery.data.forEach((sub: Specialisation) => {
       optionsSpecialisation.push({ value: sub.id!, label: sub.name })
     })
   }
@@ -90,7 +90,7 @@ function Calendars() {
   //To modify the data structure for the option field
   let optionsPromos: OptionTypeBase[] = [];
   if (!classesQuery.isLoading && !classesQuery.isError) {
-    classesQuery.data.map((sub: Class) => {
+    classesQuery.data.forEach((sub: Class) => {
       optionsPromos.push({ value: sub.id!, label: `${sub.start_year} - ${sub.end_year}` })
     })
   }
