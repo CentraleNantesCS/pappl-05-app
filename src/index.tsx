@@ -9,7 +9,8 @@ import { StateProvider } from './utils/state';
 ReactDOM.render(
   <React.StrictMode>
     <StateProvider>
-    <App /></StateProvider>
+      <App />
+    </StateProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

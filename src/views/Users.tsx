@@ -29,18 +29,19 @@ function Users() {
     setOpen(false);
   };
   const columns: ColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
     {
       field: 'fullName',
-      headerName: 'Full name',
+      headerName: 'Nom et Prénom',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 160,
+      headerAlign: 'center', 
+      align: 'center',
       valueGetter: (params: ValueGetterParams) =>
         `${params.getValue('firstname') || ''} ${params.getValue('lastname') || ''
         }`,
     },
-    { field: 'email', headerName: 'Email', width: 210 }
+    { field: 'email', headerName: 'Email', width: 210, headerAlign: 'center', align: 'center' }
   ];
 
   // Queries
@@ -61,25 +62,25 @@ function Users() {
           aria-describedby="modal-description"
         >
           <div style={modalStyle} className="bg-white absolute py-6 px-6 w-1/2 rounded-sm">
-            <h2 id="modal-title" className="text-xl font-medium py-2">Add new user</h2>
+            <h2 id="modal-title" className="text-xl font-medium py-2">Ajouter un nouveau utilisateur</h2>
             <p id="modal-description pb-4">
             </p>
             <div className="grid grid-flow-row gap-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className=""><TextField required label="First Name" className="w-full" defaultValue="" /></div>
-                <div className=""><TextField required label="Last Name" className="w-full" defaultValue="" /></div>
+                <div className=""><TextField required label="Prénom" className="w-full" defaultValue="" /></div>
+                <div className=""><TextField required label="Nom" className="w-full" defaultValue="" /></div>
               </div>
-              <div className=""><TextField required label="Acronym" className="w-full" defaultValue="" /></div>
+              <div className=""><TextField required label="Acronyme" className="w-full" defaultValue="" /></div>
               <div className=""><TextField required label="Email" className="w-full" defaultValue="" /></div>
-              <div className=""><TextField required label="Password" className="w-full" defaultValue="" /></div>
+              <div className=""><TextField required label="Mot de passe" className="w-full" defaultValue="" /></div>
               {/* TODO: role  */}
             </div>
             <div className="flex flex-row mt-10">
               <div className="flex-1"></div>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="contained" onClick={handleClose}>Cancel</Button>
+                <Button variant="contained" onClick={handleClose}>Annuler</Button>
                 <Button variant="contained" color="primary">
-                  Save
+                  Enregistrer
               </Button>
               </div>
             </div>
@@ -89,10 +90,10 @@ function Users() {
           <div className="w-full flex flex-row">
             <div className="flex-1"></div>
             <Button variant="contained" color="secondary" startIcon={<PersonAdd />} onClick={handleOpen}>
-              Add User
+              Ajouter un utilisateur
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Users: </h3>
+          <h3 className="text-3xl font-medium ml-4">Utilisateurs: </h3>
           <CardContent className="pb-20">
             {usersQuery.isLoading && <p>Loading...</p>}
             {usersQuery.error && <p>An error has occurred: {usersQuery.error || 'Unknown'}</p>}

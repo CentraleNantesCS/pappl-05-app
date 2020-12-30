@@ -13,9 +13,8 @@ const queryCache = new QueryCache()
 
 function Subjects() {
   const columns: ColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'name', headerName: 'Name', width: 230 },
-    { field: 'acronym', headerName: 'Acronym', width: 230 }
+    { field: 'name', headerName: 'Matière', width: 230, headerAlign: 'center', align: 'center' },
+    { field: 'acronym', headerName: 'Acronyme', width: 230, headerAlign: 'center', align: 'center' }
   ];
 
   function getModalStyle() {
@@ -74,25 +73,25 @@ function Subjects() {
           aria-describedby="modal-description"
         >
           <div style={modalStyle} className="bg-white absolute py-6 px-6 w-1/2 rounded-sm">
-            <h2 id="modal-title" className="text-xl font-medium py-2">Add new Subject</h2>
+            <h2 id="modal-title" className="text-xl font-medium py-2">Ajouter une matière</h2>
             <p id="modal-description pb-4">
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid grid-flow-row gap-4">
                 <div className="">
-                  <TextField required label="Title" className="w-full" defaultValue="" name="name" inputRef={register({ required: true })} />
-                  {errors.name && <span>This field is required</span>}
+                  <TextField required label="Nom de la matière" className="w-full" defaultValue="" name="name" inputRef={register({ required: true })} />
+                  {errors.name && <span>Ce champ est obligatoire</span>}
                 </div>
                 <div className="">
-                  <TextField required label="Acronym" className="w-full" defaultValue="" name="acronym" inputRef={register({ required: true })} />
-                  {errors.acronym && <span>This field is required</span>}
+                  <TextField required label="Acronyme" className="w-full" defaultValue="" name="acronym" inputRef={register({ required: true })} />
+                  {errors.acronym && <span>Ce champ est obligatoire</span>}
                 </div>
               </div>
               <div className="flex flex-row mt-10">
                 <div className="flex-1"></div>
                 <div className="grid grid-cols-2 gap-2">
-                  <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                  <Button variant="contained" type="submit" color="primary">Save</Button>
+                  <Button variant="contained" onClick={handleClose}>Annuler</Button>
+                  <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
                 </div>
               </div>
             </form>
@@ -102,7 +101,7 @@ function Subjects() {
           <div className="w-full flex flex-row">
             <div className="flex-1"></div>
             <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={handleOpen}>
-              Add Subject
+              Ajouter une matière
           </Button>
           </div>
           <h3 className="text-3xl font-medium ml-4">Matières: </h3>

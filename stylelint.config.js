@@ -23,5 +23,14 @@ module.exports = {
     indentation: [2],
     'block-no-empty': null,
     'unit-allowed-list': ['em', 'rem', 's', 'px', 'vh', 'vw', '%', 'deg', 'ms']
+  },
+  theme: {
+    fontFamily: {
+     'sans': ['Poppins', 'system-ui', ...],
+     'serif': ['ui-serif', 'Georgia', ...],
+     'mono': ['ui-monospace', 'SFMono-Regular', ...],
+     'display': ['Oswald'],
+     'body': ['Poppins'],
+    }
   }
 };
