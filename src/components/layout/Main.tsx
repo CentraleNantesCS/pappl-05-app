@@ -21,6 +21,7 @@ import ExitToApp from "@material-ui/icons/ExitToApp";
 import SchoolIcon from '@material-ui/icons/School';
 import EventIcon from '@material-ui/icons/Event';
 import BookIcon from '@material-ui/icons/Book';
+import LabelIcon from '@material-ui/icons/Label'
 import { Redirect, Switch} from "react-router-dom";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
@@ -64,7 +65,12 @@ function App(props: { children: React.ReactNode }) {
     {
       text: "Emploi du temps",
       icon: EventIcon,
-      path: "/calendars",
+      path: "/calendars"
+    },
+    {
+      text: "Types D'évènements",
+      icon: LabelIcon,
+      path: "/eventtypes",
       divider: true
     },
     {

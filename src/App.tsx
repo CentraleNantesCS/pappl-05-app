@@ -7,6 +7,7 @@ import Login from './views/Login';
 import './styles/App.scss';
 import { useStateContext } from './utils/state';
 import { ActionType } from './utils/reducer';
+import EventTypes from './views/EventTypes'
 
 import MainLayout from './components/layout/Main';
 import Users from './views/Users';
@@ -45,6 +46,9 @@ function App() {
           </Route>
           <Route path="/specialisations">
             <Specialisations/>
+          </Route>
+          <Route path="/eventtypes">
+            <EventTypes/>
           </Route>
           <Route path="/subjects">
             <Subjects/>

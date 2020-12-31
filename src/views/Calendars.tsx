@@ -39,7 +39,13 @@ function Calendars() {
     window.open(`/calendar/${id}`)
   }
 
+  const exportCalendar = (id: any) => {
+    // redirect to calendars/:id
+    window.open(`${process.env.REACT_APP_API_URL}api/calendars/${id}/export`)
+  }
+
   const columns: ColDef[] = [
+<<<<<<< HEAD
     { field: 'classe', headerName: 'Année scolaire', width: 150, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}`, headerAlign: 'center', align: 'center' },
     { field: 'specialisation', headerName: 'Option', width: 200, valueFormatter: ({ value }) => (value as Specialisation).name, headerAlign: 'center', align: 'center' },
     { field: 'id', headerName: 'Action', width: 200, headerAlign: 'center', align: 'center',renderCell: (params: ValueFormatterParams) => (
@@ -58,12 +64,40 @@ function Calendars() {
           size="small"
           style={{ marginLeft: 10 }}
           onClick={() =>{}}
+=======
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'classe', headerName: 'Année scolaire', width: 120, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
+    { field: 'specialisation', headerName: 'Option', width: 350, valueFormatter: ({ value }) => (value as Specialisation).name },
+    {
+      field: 'open', headerName: 'Action', width: 250,  renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { openCalendar(params.data.id) }}
+          >
+            Open
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { exportCalendar(params.data.id) }}
+>>>>>>> 884be6c0d3e0f204364e955f870dc2817edb82e2
           >
             Exporter
           </Button>
         </div>
+<<<<<<< HEAD
         
     )}
+=======
+      )
+    }
+>>>>>>> 884be6c0d3e0f204364e955f870dc2817edb82e2
   ];
 
   // Queries
@@ -105,7 +139,7 @@ function Calendars() {
     })
   }
 
-  const [addCalendar] = useMutation(async ({ classe, specialisation }: {classe: OptionTypeBase, specialisation: OptionTypeBase }) => {
+  const [addCalendar] = useMutation(async ({ classe, specialisation }: { classe: OptionTypeBase, specialisation: OptionTypeBase }) => {
     console.log(classe)
     const res = await axios.post('/api/calendars', { specialisation: specialisation.value, classe: classe.value });
     return res.data;
@@ -166,13 +200,21 @@ function Calendars() {
                   {errors.subjects && <span>Ce champ est obligatoire</span>}
                 </div>
               </div>
+<<<<<<< HEAD
             <div className="flex flex-row mt-10">
               <div className="flex-1"></div>
               <div className="grid grid-cols-2 gap-2">
                 <Button variant="contained" onClick={handleClose}>Annuler</Button>
                 <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
+=======
+              <div className="flex flex-row mt-10">
+                <div className="flex-1"></div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant="contained" onClick={handleClose}>Cancel</Button>
+                  <Button variant="contained" type="submit" color="primary">Save</Button>
+                </div>
+>>>>>>> 884be6c0d3e0f204364e955f870dc2817edb82e2
               </div>
-            </div>
 
             </form>
           </div>

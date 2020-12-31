@@ -29,13 +29,14 @@ function Users() {
     setOpen(false);
   };
   const columns: ColDef[] = [
+    { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center' },
     {
       field: 'fullName',
       headerName: 'Nom et Prénom',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 160,
-      headerAlign: 'center', 
+      headerAlign: 'center',
       align: 'center',
       valueGetter: (params: ValueGetterParams) =>
         `${params.getValue('firstname') || ''} ${params.getValue('lastname') || ''
