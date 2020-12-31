@@ -23,6 +23,7 @@ import EventIcon from '@material-ui/icons/Event';
 import BookIcon from '@material-ui/icons/Book';
 import { Redirect, Switch} from "react-router-dom";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 function App(props: { children: React.ReactNode }) {
   const { state, dispatch } = useStateContext();
@@ -80,32 +81,47 @@ function App(props: { children: React.ReactNode }) {
       path: "/login"
     },
   ]
+
+  const theme = createMuiTheme({
+    typography: {
+      fontFamily: 'Poppins'
+    },
+  });
+  
   return (
     <div className="App">
       <nav>
         <AppBar position="static" className="flex-1">
-          <Toolbar className="flex bg-purple-800">
-            <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
-            <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className="flex-1 text-4xl ">
-              <Link to="/">EDT Centrale Nantes</Link>
-            </Typography>
             {!state.isAuthenticated && (
-              <Button color="inherit" startIcon={<LockOpenIcon />}>
-                <Link to="/login">Se connecter</Link>
-              </Button>
+              <Toolbar className="flex bg-opacity-0	">
+                <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
+                <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" className="flex-1 text-4xl ">
+                  <Link to="/">EDT Centrale Nantes</Link>
+                </Typography>
+                <Button color="inherit" startIcon={<LockOpenIcon />}>
+                  <Link to="/login">Se connecter</Link>
+                </Button>
+              </Toolbar>
             )}
             {state.isAuthenticated && (
-              <Button color="inherit" onClick={logout} startIcon={<ExitToApp /> }>
-                <Link to="/">Se déconnecter</Link>
-              </Button>
+              <Toolbar className="flex bg-purple-700">
+                <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
+                <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" className="flex-1 text-4xl ">
+                  <Link to="/">EDT Centrale Nantes</Link>
+                </Typography>
+                <Button color="inherit" onClick={logout} startIcon={<ExitToApp /> }>
+                  <Link to="/">Se déconnecter</Link>
+                </Button>
+              </Toolbar>
             )}
-          </Toolbar>
         </AppBar>
       </nav>
       <Drawer open={sidebarOpen} onClose={toggleDrawer} >
-        <List className="w-64">
+        <List className="w-64 text-gray-700 font-serif">
         <div className="flex items-center py-2 justify-end ">
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
@@ -114,29 +130,33 @@ function App(props: { children: React.ReactNode }) {
           {state.isAuthenticated  && menu.map((menuItem) => {
             const Icon = menuItem.icon
             return (
-              <Link to={menuItem.path} key={menuItem.text}>
-                <ListItem button key={menuItem.text}>
-                    {Icon && <ListItemIcon><Icon /></ListItemIcon>}
-                  <ListItemText primary={menuItem.text} />
-                </ListItem>
-                {menuItem?.divider && <div className="my-4"><Divider variant="middle"/></div>}
-              </Link>
+              <ThemeProvider theme={theme}>
+                <Link to={menuItem.path} key={menuItem.text} >
+                  <ListItem button key={menuItem.text} >
+                      {Icon && <ListItemIcon><Icon /></ListItemIcon>}
+                    <ListItemText primary={menuItem.text} />
+                  </ListItem>
+                  {menuItem?.divider && <div className="my-4"><Divider variant="middle"/></div>}
+                </Link>
+              </ThemeProvider>
             )
           })}
           {!state.isAuthenticated  && guestMenu.map((menuItem) => {
             const Icon = menuItem.icon
             return (
-              <Link to={menuItem.path} key={menuItem.path}>
-                <ListItem button key={menuItem.path}>
-                    {Icon && <ListItemIcon key={menuItem.path}><Icon /></ListItemIcon>}
-                  <ListItemText primary={menuItem.text} key={menuItem.path} />
-                </ListItem>
-              </Link>
+              <ThemeProvider theme={theme}>
+                <Link to={menuItem.path} key={menuItem.path}>
+                  <ListItem button key={menuItem.path}>
+                      {Icon && <ListItemIcon key={menuItem.path}><Icon /></ListItemIcon>}
+                    <ListItemText primary={menuItem.text} key={menuItem.path} />
+                  </ListItem>
+                </Link>
+              </ThemeProvider>
             )
           })}
         </List>
       </Drawer>
-      <div className="flex flex-1 w-full h-full">
+      <div className="flex flex-1 w-full h-full ">
         {props.children}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
 import React from 'react';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
@@ -11,15 +11,17 @@ import { Subject } from '../models/Subject';
 import { Specialisation } from '../models/Specialisation';
 import { useForm, Controller } from "react-hook-form";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const queryCache = new QueryCache()
 
 
 function Specialisations() {
   const columns: ColDef[] = [
-    { field: 'name', headerName: 'Option', width: 180, headerAlign: 'center', align: 'center'},
+    { field: 'name', headerName: 'Option', width: 250, headerAlign: 'center', align: 'center'},
     { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center'},
-    { field: 'subjects', headerName: 'Matières', flex: 1 , valueFormatter: ({ value }) => value ? (value as Subject[]).map((subject: Subject) => subject.name).join(' | ') : "" , headerAlign: 'center', align: 'center' }
+    { field: 'subjects', headerName: 'Matières', flex:1 , valueFormatter: ({ value }) => value ? (value as Subject[]).map((subject: Subject) => subject.name).join(' | ') : "" , headerAlign: 'center', align: 'center' }
   ];
 
   function getModalStyle() {
@@ -136,15 +138,15 @@ function Specialisations() {
             <div className="flex-1"></div>
             <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={handleOpen}>
               Ajouter une option
-          </Button>
+            </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Options Disciplinaires: </h3>
-          <CardContent className="pb-20">
-            {specialisationsQuery.isLoading && <p>Loading...</p>}
-            {specialisationsQuery.error && <p>An error has occurred: {specialisationsQuery.error || 'Unknown'}</p>}
-            {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}
-            {specialisationsQuery.data && <DataGrid autoHeight rows={specialisationsQuery.data} columns={columns} pageSize={5} checkboxSelection />}
-          </CardContent>
+            <h3 className="text-3xl font-medium ml-4">Options Disciplinaires: </h3>
+            <CardContent className="pb-20">
+              {specialisationsQuery.isLoading && <p>Loading...</p>}
+              {specialisationsQuery.error && <p>An error has occurred: {specialisationsQuery.error || 'Unknown'}</p>}
+              {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}
+              {specialisationsQuery.data && <DataGrid autoHeight rows={specialisationsQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+            </CardContent>
         </Card>
       </Container>
     </ReactQueryCacheProvider>

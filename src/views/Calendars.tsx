@@ -40,19 +40,29 @@ function Calendars() {
   }
 
   const columns: ColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'classe', headerName: 'Année scolaire', width: 350, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
-    { field: 'specialisation', headerName: 'Option', valueFormatter: ({ value }) => (value as Specialisation).name },
-    { field: 'id', headerName: 'Action', renderCell: (params: ValueFormatterParams) => (
-        <Button
+    { field: 'classe', headerName: 'Année scolaire', width: 150, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}`, headerAlign: 'center', align: 'center' },
+    { field: 'specialisation', headerName: 'Option', width: 200, valueFormatter: ({ value }) => (value as Specialisation).name, headerAlign: 'center', align: 'center' },
+    { field: 'id', headerName: 'Action', width: 200, headerAlign: 'center', align: 'center',renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <Button
           variant="contained"
           color="primary"
           size="small"
-          style={{ marginLeft: 16 }}
           onClick={() =>{openCalendar(params.data.id)}}
-        >
-          Open
-        </Button>
+          >
+            Ouvrir
+          </Button>
+          <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          style={{ marginLeft: 10 }}
+          onClick={() =>{}}
+          >
+            Exporter
+          </Button>
+        </div>
+        
     )}
   ];
 
@@ -122,14 +132,14 @@ function Calendars() {
           aria-describedby="modal-description"
         >
           <div style={modalStyle} className="bg-white absolute py-6 px-6 w-1/2 rounded-sm">
-            <h2 id="modal-title" className="text-xl font-medium py-2">Add new calendar</h2>
+            <h2 id="modal-title" className="text-xl font-medium py-2">Ajouter un EDT</h2>
             <p id="modal-description pb-4">
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid grid-flow-row gap-4">
 
                 <div className="form pt-5">
-                  <h4>Select a specialisation:</h4>
+                  <h4>Selectionner une option :</h4>
                   <Controller
                     name="specialisation"
                     as={Select}
@@ -139,11 +149,11 @@ function Calendars() {
                     control={control}
                     rules={{ required: true }}
                   />
-                  {errors.subjects && <span>This field is required</span>}
+                  {errors.subjects && <span>Ce champ est obligatoire</span>}
                 </div>
 
                 <div className="form pt-5">
-                  <h4>Select a promo :</h4>
+                  <h4>Selectionner une promo :</h4>
                   <Controller
                     name="classe"
                     as={Select}
@@ -153,14 +163,14 @@ function Calendars() {
                     control={control}
                     rules={{ required: true }}
                   />
-                  {errors.subjects && <span>This field is required</span>}
+                  {errors.subjects && <span>Ce champ est obligatoire</span>}
                 </div>
               </div>
             <div className="flex flex-row mt-10">
               <div className="flex-1"></div>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                <Button variant="contained" type="submit" color="primary">Save</Button>
+                <Button variant="contained" onClick={handleClose}>Annuler</Button>
+                <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
               </div>
             </div>
 
@@ -171,10 +181,10 @@ function Calendars() {
           <div className="w-full flex flex-row">
             <div className="flex-1"></div>
             <Button variant="contained" color="secondary" startIcon={<PersonAdd />} onClick={handleOpen}>
-              Add Calendar
+              Ajouter un EDT
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Calendars: </h3>
+          <h3 className="text-3xl font-medium ml-4">Emplois du temps: </h3>
           <CardContent className="pb-20">
             {calendarsQuery.isLoading && <p>Loading...</p>}
             {calendarsQuery.error && <p>An error has occurred: {calendarsQuery.error || 'Unknown'}</p>}

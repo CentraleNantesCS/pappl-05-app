@@ -165,6 +165,7 @@ module.exports = {
       'gradient-to-bl': 'linear-gradient(to bottom left, var(--gradient-color-stops))',
       'gradient-to-l': 'linear-gradient(to left, var(--gradient-color-stops))',
       'gradient-to-tl': 'linear-gradient(to top left, var(--gradient-color-stops))',
+      'hero': "url('https://images.pexels.com/photos/162583/work-workplace-office-computer-162583.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')"
     },
     gradientColorStops: theme => theme('colors'),
     backgroundOpacity: theme => theme('opacity'),
@@ -251,6 +252,7 @@ module.exports = {
     },
     fontFamily: {
       sans: [
+        "Poppins",
         'system-ui',
         '-apple-system',
         'BlinkMacSystemFont',
@@ -265,8 +267,6 @@ module.exports = {
         '"Segoe UI Symbol"',
         '"Noto Color Emoji"',
       ],
-      serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
-      mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
     },
     fontSize: {
       xs: '0.75rem',
