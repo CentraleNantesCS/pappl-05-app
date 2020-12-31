@@ -99,7 +99,7 @@ function App(props: { children: React.ReactNode }) {
       <nav>
         <AppBar position="static" className="flex-1">
             {!state.isAuthenticated && (
-              <Toolbar className="flex bg-opacity-0	">
+              <Toolbar className="flex bg-indigo-800">
                 <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
                 <MenuIcon />
                 </IconButton>
@@ -112,23 +112,23 @@ function App(props: { children: React.ReactNode }) {
               </Toolbar>
             )}
             {state.isAuthenticated && (
-              <Toolbar className="flex bg-purple-700">
-                <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
-                <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className="flex-1 text-4xl ">
-                  <Link to="/">EDT Centrale Nantes</Link>
-                </Typography>
-                <Button color="inherit" onClick={logout} startIcon={<ExitToApp /> }>
-                  <Link to="/">Se déconnecter</Link>
-                </Button>
-              </Toolbar>
+                <Toolbar className="flex bg-indigo-800">
+                  <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
+                  <MenuIcon />
+                  </IconButton>
+                  <Typography variant="h6" className="flex-1 text-4xl ">
+                    <Link to="/">EDT Centrale Nantes</Link>
+                  </Typography>
+                  <Button color="inherit" onClick={logout} startIcon={<ExitToApp /> }>
+                    <Link to="/">Se déconnecter</Link>
+                  </Button>
+                </Toolbar>
             )}
         </AppBar>
       </nav>
       <Drawer open={sidebarOpen} onClose={toggleDrawer} >
-        <List className="w-64 text-gray-700 font-serif">
-        <div className="flex items-center py-2 justify-end ">
+        <List className="w-64 text-black-700 font-serif">
+        <div className="flex items-center p-5 justify-end ">
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
@@ -137,12 +137,12 @@ function App(props: { children: React.ReactNode }) {
             const Icon = menuItem.icon
             return (
               <ThemeProvider theme={theme}>
-                <Link to={menuItem.path} key={menuItem.text} >
+                <Link to={menuItem.path} key={menuItem.text}>
                   <ListItem button key={menuItem.text} >
                       {Icon && <ListItemIcon><Icon /></ListItemIcon>}
                     <ListItemText primary={menuItem.text} />
                   </ListItem>
-                  {menuItem?.divider && <div className="my-4"><Divider variant="middle"/></div>}
+                  {menuItem?.divider && <div className="mx-20"><Divider variant="middle"/></div>}
                 </Link>
               </ThemeProvider>
             )
