@@ -39,21 +39,39 @@ function Calendars() {
     window.open(`/calendar/${id}`)
   }
 
+  const exportCalendar = (id: any) => {
+    // redirect to calendars/:id
+    window.open(`${process.env.REACT_APP_API_URL}api/calendars/${id}/export`)
+  }
+
   const columns: ColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'classe', headerName: 'Année scolaire', width: 120, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
     { field: 'specialisation', headerName: 'Option', width: 350, valueFormatter: ({ value }) => (value as Specialisation).name },
-    { field: 'id2', headerName: 'Action', renderCell: (params: ValueFormatterParams) => (
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginLeft: 16 }}
-          onClick={() =>{openCalendar(params.data.id)}}
-        >
-          Open
-        </Button>
-    )}
+    {
+      field: 'open', headerName: 'Action', width: 250,  renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { openCalendar(params.data.id) }}
+          >
+            Open
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { exportCalendar(params.data.id) }}
+          >
+            Exporter
+          </Button>
+        </div>
+      )
+    }
   ];
 
   // Queries
@@ -95,7 +113,7 @@ function Calendars() {
     })
   }
 
-  const [addCalendar] = useMutation(async ({ classe, specialisation }: {classe: OptionTypeBase, specialisation: OptionTypeBase }) => {
+  const [addCalendar] = useMutation(async ({ classe, specialisation }: { classe: OptionTypeBase, specialisation: OptionTypeBase }) => {
     console.log(classe)
     const res = await axios.post('/api/calendars', { specialisation: specialisation.value, classe: classe.value });
     return res.data;
@@ -156,13 +174,13 @@ function Calendars() {
                   {errors.subjects && <span>This field is required</span>}
                 </div>
               </div>
-            <div className="flex flex-row mt-10">
-              <div className="flex-1"></div>
-              <div className="grid grid-cols-2 gap-2">
-                <Button variant="contained" onClick={handleClose}>Cancel</Button>
-                <Button variant="contained" type="submit" color="primary">Save</Button>
+              <div className="flex flex-row mt-10">
+                <div className="flex-1"></div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant="contained" onClick={handleClose}>Cancel</Button>
+                  <Button variant="contained" type="submit" color="primary">Save</Button>
+                </div>
               </div>
-            </div>
 
             </form>
           </div>

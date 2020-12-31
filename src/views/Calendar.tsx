@@ -33,6 +33,7 @@ import { Event as CalendarEvent } from '../models/Event';
 import { Subject } from '../models/Subject';
 import { EventType } from '../models/EventType';
 import { User } from '../models/User';
+import { getDate, getHours, isAfter, setHours, setMinutes } from 'date-fns'
 
 const queryCache = new QueryCache()
 
@@ -131,17 +132,33 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
   ];
   // Cache
   const cache = useQueryCache()
+  const generateTitle = (event: CalendarEvent) => {
+    const items = []
 
+    if (event.eventType?.acronym == 'JB') {
+      return 'Journée banalisée'
+    }
+
+    if (event.eventType?.acronym == 'DJB') {
+      return 'Demi-Journée banalisée'
+    }
+
+    if(event.eventType.acronym) items.push(event.eventType.acronym)
+    if(event.subject?.acronym) items.push(event.subject.acronym)
+    if (event.host) items.push(fullNameOrAcronym(event.host))
+    if(event.remote) items.push('dist')
+    return items.join(' - ')
+  }
   const eventsToAppointements = (events: CalendarEvent[]): AppointmentModel[] => {
     return events.map((event: CalendarEvent) => {
       return {
         startDate: event.start,
         endDate: event.end,
-        title: `${event.eventType.acronym} - ${event.subject.acronym}${event.host ? ' - ' + fullNameOrAcronym(event.host) : ''}${event.remote ? ' - dist' : ''}`,
-        type: String(event.subject.id),
+        title: generateTitle(event),
+        type: String(event.subject?.id),
         allDay: false,
         id: event.id,
-        subject_id: event.subject.id,
+        subject_id: event.subject?.id,
         event_type_id: event.eventType.id,
         user_id: event?.host?.id || null,
         remote: event.remote
@@ -210,7 +227,35 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
       onFieldChange({ remote: nextValue })
     }
     const onEventTypeChange = (nextValue: any) => {
-      onFieldChange({ event_type_id: nextValue })
+      console.log(nextValue)
+      const originalDate = appointmentData.startDate as Date
+      let startDate
+      let endDate
+      switch (nextValue) {
+        case 6:
+          // djb
+          if (getHours(originalDate) < 12) {
+            startDate = setMinutes(setHours(originalDate, 8), 0)
+            endDate = setMinutes(setHours(originalDate, 12), 15)
+          } else {
+            startDate = setMinutes(setHours(originalDate, 13), 45)
+            endDate = setMinutes(setHours(originalDate, 18), 0)
+          }
+
+          onFieldChange({ event_type_id: nextValue, startDate, endDate })
+          break;
+        case 5:
+          // jb
+          startDate = setMinutes(setHours(originalDate, 8), 0)
+          endDate = setMinutes(setHours(originalDate, 18), 0)
+
+
+          onFieldChange({ event_type_id: nextValue, startDate, endDate })
+          break;
+
+        default:
+          onFieldChange({ event_type_id: nextValue })
+      }
     }
     const onHostChange = (nextValue: any) => {
       onFieldChange({ user_id: nextValue })
