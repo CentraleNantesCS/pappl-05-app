@@ -5,7 +5,7 @@ import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@mate
 import axios from '../utils/axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useForm } from "react-hook-form";
-
+import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon  from "@material-ui/icons/Delete";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import { Subject } from '../models/Subject';
@@ -16,17 +16,29 @@ function EventTypes() {
   const deleteType = (id: number | string) => {}
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
-    { field: 'acronym', headerName: 'Nom', width: 230, headerAlign: 'center', align: 'center' },
-    { field: 'id2', headerName: 'Action', renderCell: (params: ValueFormatterParams) => (
-      <Button
+    { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 200, renderCell: (params: ValueFormatterParams) => (
+      <div>
+        <Button
         variant="contained"
         color="primary"
         size="small"
         style={{ marginLeft: 16 }}
         onClick={() =>{deleteType(params.data.id)}}
-      >
-        <DeleteIcon />
-      </Button>
+        >
+          <DeleteIcon />
+        </Button>
+        <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        style={{ marginLeft: 16 }}
+        onClick={() =>{}}
+        >
+          <EditIcon />
+        </Button>
+      </div>
+      
   )}
   ];
 
