@@ -66,7 +66,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
   )
 
   const eventTypesQuery = useQuery('getEventTypes', () =>
-    axios.get('/api/calendar/events/types').then(res =>
+    axios.get('/api/eventtypes').then(res =>
       res.data
     )
   )

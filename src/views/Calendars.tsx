@@ -41,9 +41,9 @@ function Calendars() {
 
   const columns: ColDef[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'classe', headerName: 'Année scolaire', width: 350, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
-    { field: 'specialisation', headerName: 'Option', valueFormatter: ({ value }) => (value as Specialisation).name },
-    { field: 'id', headerName: 'Action', renderCell: (params: ValueFormatterParams) => (
+    { field: 'classe', headerName: 'Année scolaire', width: 120, valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
+    { field: 'specialisation', headerName: 'Option', width: 350, valueFormatter: ({ value }) => (value as Specialisation).name },
+    { field: 'id2', headerName: 'Action', renderCell: (params: ValueFormatterParams) => (
         <Button
           variant="contained"
           color="primary"
