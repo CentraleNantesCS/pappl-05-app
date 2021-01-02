@@ -4,6 +4,7 @@ import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import { useQuery, QueryCache, ReactQueryCacheProvider } from 'react-query'
+import PersonIcon from "@material-ui/icons/Person";
 
 const queryCache = new QueryCache()
 
@@ -94,7 +95,10 @@ function Users() {
               Ajouter un utilisateur
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Utilisateurs: </h3>
+          <div className="flex items-center	ml-4">
+            <PersonIcon fontSize="large"/>
+            <h3 className="text-3xl font-medium ml-4">Utilisateurs : </h3>
+          </div>
           <CardContent className="pb-20">
             {usersQuery.isLoading && <p>Loading...</p>}
             {usersQuery.error && <p>An error has occurred: {usersQuery.error || 'Unknown'}</p>}

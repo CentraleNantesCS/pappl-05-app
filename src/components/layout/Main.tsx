@@ -98,8 +98,8 @@ function App(props: { children: React.ReactNode }) {
     <div className="App">
       <nav>
         <AppBar position="static" className="flex-1">
-            {!state.isAuthenticated && (
-              <Toolbar className="flex bg-indigo-800">
+            {/* {!state.isAuthenticated && (
+              <Toolbar style={{ background: '#045d93' }} className="flex">
                 <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
                 <MenuIcon />
                 </IconButton>
@@ -110,9 +110,9 @@ function App(props: { children: React.ReactNode }) {
                   <Link to="/login">Se connecter</Link>
                 </Button>
               </Toolbar>
-            )}
+            )} */}
             {state.isAuthenticated && (
-                <Toolbar className="flex bg-indigo-800">
+                <Toolbar style={{ background: '#045d93' }} className="flex">
                   <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
                   <MenuIcon />
                   </IconButton>
@@ -147,7 +147,7 @@ function App(props: { children: React.ReactNode }) {
               </ThemeProvider>
             )
           })}
-          {!state.isAuthenticated  && guestMenu.map((menuItem) => {
+          {/* {!state.isAuthenticated  && guestMenu.map((menuItem) => {
             const Icon = menuItem.icon
             return (
               <ThemeProvider theme={theme}>
@@ -159,7 +159,7 @@ function App(props: { children: React.ReactNode }) {
                 </Link>
               </ThemeProvider>
             )
-          })}
+          })} */}
         </List>
       </Drawer>
       <div className="flex flex-1 w-full h-full ">

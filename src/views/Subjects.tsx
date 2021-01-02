@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import { Subject } from '../models/Subject';
+import SchoolIcon from '@material-ui/icons/School';
 
 const queryCache = new QueryCache()
 
@@ -104,7 +105,10 @@ function Subjects() {
               Ajouter une matière
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Matières: </h3>
+          <div className="flex items-center	ml-4">
+            <SchoolIcon fontSize="large"/>
+            <h3 className="text-3xl font-medium ml-4">Matières :</h3>
+          </div>
           <CardContent className="pb-20">
             {subjectsQuery.isLoading && <p>Loading...</p>}
             {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}

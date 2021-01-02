@@ -9,6 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon  from "@material-ui/icons/Delete";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import { Subject } from '../models/Subject';
+import LabelIcon from '@material-ui/icons/Label'
 
 const queryCache = new QueryCache()
 
@@ -17,8 +18,7 @@ function EventTypes() {
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
     { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
-    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 200, renderCell: (params: ValueFormatterParams) => (
-      <div>
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
         <Button
         variant="contained"
         color="primary"
@@ -27,18 +27,7 @@ function EventTypes() {
         onClick={() =>{deleteType(params.data.id)}}
         >
           <DeleteIcon />
-        </Button>
-        <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        style={{ marginLeft: 16 }}
-        onClick={() =>{}}
-        >
-          <EditIcon />
-        </Button>
-      </div>
-      
+        </Button>      
   )}
   ];
 
@@ -129,7 +118,10 @@ function EventTypes() {
               Ajouter un type
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Types D'évènements: </h3>
+          <div className="flex items-center	ml-4">
+            <LabelIcon fontSize="large"/>
+            <h3 className="text-3xl font-medium ml-4">Types D'évènements :</h3>
+          </div>
           <CardContent className="pb-20">
             {eventTypesQuery.isLoading && <p>Loading...</p>}
             {eventTypesQuery.error && <p>An error has occurred: {eventTypesQuery.error || 'Unknown'}</p>}

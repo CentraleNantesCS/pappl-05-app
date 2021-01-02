@@ -13,6 +13,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import BookIcon from '@material-ui/icons/Book';
 
 const queryCache = new QueryCache()
 
@@ -140,7 +141,10 @@ function Specialisations() {
               Ajouter une option
             </Button>
           </div>
-            <h3 className="text-3xl font-medium ml-4">Options Disciplinaires: </h3>
+            <div className="flex items-center	ml-4">
+              <BookIcon fontSize="large"/>
+              <h3 className="text-3xl font-medium ml-4">Options Disciplinaires :</h3>
+            </div>
             <CardContent className="pb-20">
               {specialisationsQuery.isLoading && <p>Loading...</p>}
               {specialisationsQuery.error && <p>An error has occurred: {specialisationsQuery.error || 'Unknown'}</p>}

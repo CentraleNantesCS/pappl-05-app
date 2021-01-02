@@ -9,6 +9,7 @@ import Select, { OptionTypeBase } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Specialisation } from '../models/Specialisation';
 import { Class } from '../models/Class';
+import EventIcon from '@material-ui/icons/Event';
 
 const queryCache = new QueryCache()
 
@@ -191,7 +192,10 @@ function Calendars() {
               Ajouter un EDT
           </Button>
           </div>
-          <h3 className="text-3xl font-medium ml-4">Emplois du temps: </h3>
+          <div className="flex items-center	ml-4">
+              <EventIcon fontSize="large"/>
+              <h3 className="text-3xl font-medium ml-4">Emplois du temps :</h3>
+            </div>
           <CardContent className="pb-20">
             {calendarsQuery.isLoading && <p>Loading...</p>}
             {calendarsQuery.error && <p>An error has occurred: {calendarsQuery.error || 'Unknown'}</p>}
