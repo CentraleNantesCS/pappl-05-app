@@ -14,6 +14,7 @@ import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCac
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import BookIcon from '@material-ui/icons/Book';
+import IconButton  from '@material-ui/core/IconButton';
 
 const queryCache = new QueryCache()
 
@@ -22,7 +23,17 @@ function Specialisations() {
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Option', width: 250, headerAlign: 'center', align: 'center'},
     { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center'},
-    { field: 'subjects', headerName: 'Matières', flex:1 , valueFormatter: ({ value }) => value ? (value as Subject[]).map((subject: Subject) => subject.name).join(' | ') : "" , headerAlign: 'center', align: 'center' }
+    { field: 'subjects', headerName: 'Matières', flex:1 , valueFormatter: ({ value }) => value ? (value as Subject[]).map((subject: Subject) => subject.name).join(' | ') : "" , headerAlign: 'center', align: 'center' },
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
+      <div>
+        <IconButton color ="secondary">
+          <DeleteIcon />
+        </IconButton>
+        <IconButton color = "primary">
+          <EditIcon />
+        </IconButton>    
+      </div>
+    )}
   ];
 
   function getModalStyle() {
@@ -149,7 +160,7 @@ function Specialisations() {
               {specialisationsQuery.isLoading && <p>Loading...</p>}
               {specialisationsQuery.error && <p>An error has occurred: {specialisationsQuery.error || 'Unknown'}</p>}
               {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}
-              {specialisationsQuery.data && <DataGrid autoHeight rows={specialisationsQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+              {specialisationsQuery.data && <DataGrid autoHeight rows={specialisationsQuery.data} columns={columns} pageSize={5} />}
             </CardContent>
         </Card>
       </Container>

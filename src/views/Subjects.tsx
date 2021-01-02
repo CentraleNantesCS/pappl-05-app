@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useStateContext } from '../utils/state';
-import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useForm } from "react-hook-form";
@@ -9,13 +9,26 @@ import { useForm } from "react-hook-form";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import { Subject } from '../models/Subject';
 import SchoolIcon from '@material-ui/icons/School';
+import IconButton  from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const queryCache = new QueryCache()
 
 function Subjects() {
   const columns: ColDef[] = [
-    { field: 'name', headerName: 'Matière', width: 230, headerAlign: 'center', align: 'center' },
-    { field: 'acronym', headerName: 'Acronyme', width: 230, headerAlign: 'center', align: 'center' }
+    { field: 'name', headerName: 'Matière', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'acronym', headerName: 'Acronyme', width: 230, headerAlign: 'center', align: 'center' },
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
+      <div>
+        <IconButton color ="secondary">
+          <DeleteIcon />
+        </IconButton>
+        <IconButton color = "primary">
+          <EditIcon />
+        </IconButton>    
+      </div>
+    )}
   ];
 
   function getModalStyle() {
@@ -112,7 +125,7 @@ function Subjects() {
           <CardContent className="pb-20">
             {subjectsQuery.isLoading && <p>Loading...</p>}
             {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}
-            {subjectsQuery.data && <DataGrid autoHeight rows={subjectsQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+            {subjectsQuery.data && <DataGrid autoHeight rows={subjectsQuery.data} columns={columns} pageSize={5} />}
           </CardContent>
         </Card>
       </Container></ReactQueryCacheProvider>

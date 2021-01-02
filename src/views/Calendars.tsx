@@ -49,7 +49,7 @@ function Calendars() {
     { field: 'classe', headerName: 'Année scolaire', width: 200, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
     { field: 'specialisation', headerName: 'Option', width: 350, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value as Specialisation).name },
     {
-      field: 'open', headerName: 'Action', width: 250, headerAlign: 'center', align: 'center',  renderCell: (params: ValueFormatterParams) => (
+      field: 'open', headerName: 'Action', width: 350, headerAlign: 'center', align: 'center',  renderCell: (params: ValueFormatterParams) => (
         <div>
           <Button
             variant="contained"
@@ -68,6 +68,14 @@ function Calendars() {
             onClick={() => { exportCalendar(params.data.id) }}
           >
             Exporter
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => {}}
+          >
+            Supprimer
           </Button>
         </div>
       )
@@ -199,7 +207,7 @@ function Calendars() {
           <CardContent className="pb-20">
             {calendarsQuery.isLoading && <p>Loading...</p>}
             {calendarsQuery.error && <p>An error has occurred: {calendarsQuery.error || 'Unknown'}</p>}
-            {calendarsQuery.data && <DataGrid autoHeight rows={calendarsQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+            {calendarsQuery.data && <DataGrid autoHeight rows={calendarsQuery.data} columns={columns} pageSize={5}/>}
           </CardContent>
         </Card>
       </Container>

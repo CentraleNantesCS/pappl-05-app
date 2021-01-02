@@ -10,6 +10,7 @@ import DeleteIcon  from "@material-ui/icons/Delete";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
 import { Subject } from '../models/Subject';
 import LabelIcon from '@material-ui/icons/Label'
+import IconButton  from '@material-ui/core/IconButton';
 
 const queryCache = new QueryCache()
 
@@ -19,15 +20,15 @@ function EventTypes() {
     { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
     { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
     { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
-        <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        style={{ marginLeft: 16 }}
-        onClick={() =>{deleteType(params.data.id)}}
-        >
-          <DeleteIcon />
-        </Button>      
+        <div>
+          <IconButton color ="secondary">
+            <DeleteIcon />
+          </IconButton>
+          <IconButton color = "primary">
+            <EditIcon />
+          </IconButton>    
+        </div>
+            
   )}
   ];
 
@@ -125,7 +126,7 @@ function EventTypes() {
           <CardContent className="pb-20">
             {eventTypesQuery.isLoading && <p>Loading...</p>}
             {eventTypesQuery.error && <p>An error has occurred: {eventTypesQuery.error || 'Unknown'}</p>}
-            {eventTypesQuery.data && <DataGrid autoHeight rows={eventTypesQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+            {eventTypesQuery.data && <DataGrid autoHeight rows={eventTypesQuery.data} columns={columns} pageSize={5} />}
           </CardContent>
         </Card>
       </Container></ReactQueryCacheProvider>

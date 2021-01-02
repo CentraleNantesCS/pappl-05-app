@@ -1,10 +1,14 @@
 import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
 import React from 'react';
-import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import { useQuery, QueryCache, ReactQueryCacheProvider } from 'react-query'
 import PersonIcon from "@material-ui/icons/Person";
+import IconButton  from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const queryCache = new QueryCache()
 
@@ -30,7 +34,6 @@ function Users() {
     setOpen(false);
   };
   const columns: ColDef[] = [
-    { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center' },
     {
       field: 'fullName',
       headerName: 'Nom et Prénom',
@@ -43,7 +46,18 @@ function Users() {
         `${params.getValue('firstname') || ''} ${params.getValue('lastname') || ''
         }`,
     },
-    { field: 'email', headerName: 'Email', width: 210, headerAlign: 'center', align: 'center' }
+    { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center' },
+    { field: 'email', headerName: 'Email', width: 300, headerAlign: 'center', align: 'center' },
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
+      <div>
+        <IconButton color ="secondary">
+          <DeleteIcon />
+        </IconButton>
+        <IconButton color = "primary">
+          <EditIcon />
+        </IconButton>    
+      </div>
+    )}
   ];
 
   // Queries
@@ -102,7 +116,7 @@ function Users() {
           <CardContent className="pb-20">
             {usersQuery.isLoading && <p>Loading...</p>}
             {usersQuery.error && <p>An error has occurred: {usersQuery.error || 'Unknown'}</p>}
-            {usersQuery.data && <DataGrid autoHeight rows={usersQuery.data} columns={columns} pageSize={5} checkboxSelection />}
+            {usersQuery.data && <DataGrid autoHeight rows={usersQuery.data} columns={columns} pageSize={5}/>}
           </CardContent>
         </Card>
       </Container>
