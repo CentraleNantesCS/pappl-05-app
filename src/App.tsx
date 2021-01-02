@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './views/Home';
 import Calendars from './views/Calendars';
 import Calendar from './views/Calendar';
+// import Promos from './views/Promos';
 import Login from './views/Login';
 import './styles/App.scss';
 import { useStateContext } from './utils/state';

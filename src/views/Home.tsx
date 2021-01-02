@@ -23,8 +23,8 @@ function Home() {
       )}
       {state.isAuthenticated && (
         <div className="flex-col w-6/12 h-auto justify-end items-center text-white text-center">
-          <h2 className="my-10 text-4xl">Bonjour <span className="text-yellow-400">Machin</span> !</h2>
-          <p className=" my-10 text-2xl">Vous êtes connectés à votre espace</p>
+          <h2 className="my-10 text-4xl">Bonjour <span className="text-yellow-500">Anas Mazouni</span> !</h2>
+          <p className=" my-10 text-2xl">Vous êtes connecté à votre espace</p>
         </div>
       )}
     </div>

@@ -25,6 +25,7 @@ import LabelIcon from '@material-ui/icons/Label'
 import { Redirect, Switch} from "react-router-dom";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import ListIcon from '@material-ui/icons/List';
 
 function App(props: { children: React.ReactNode }) {
   const { state, dispatch } = useStateContext();
@@ -65,13 +66,18 @@ function App(props: { children: React.ReactNode }) {
     {
       text: "Emploi du temps",
       icon: EventIcon,
-      path: "/calendars"
+      path: "/calendars",
+      divider: true
     },
     {
       text: "Types D'évènements",
       icon: LabelIcon,
       path: "/eventtypes",
-      divider: true
+    },
+    {
+      text: "Promotions",
+      icon: ListIcon,
+      path: "/promos"
     },
     {
       text: "Utilisateurs",
@@ -137,9 +143,9 @@ function App(props: { children: React.ReactNode }) {
             const Icon = menuItem.icon
             return (
               <ThemeProvider theme={theme}>
-                <Link to={menuItem.path} key={menuItem.text}>
-                  <ListItem button key={menuItem.text} >
-                      {Icon && <ListItemIcon><Icon /></ListItemIcon>}
+                <Link  className="hover:text-blue-700" to={menuItem.path} key={menuItem.text}>
+                  <ListItem className="hover:text-blue-700" button key={menuItem.text} >
+                      {Icon && <ListItemIcon className="hover:text-blue-700"><Icon/></ListItemIcon>}
                     <ListItemText primary={menuItem.text} />
                   </ListItem>
                   {menuItem?.divider && <div className="mx-20"><Divider variant="middle"/></div>}
