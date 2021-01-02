@@ -3,4 +3,5 @@
 - Adding a page of promos as the user can Add promos.
 - Submit form in the 'users' page doesn't work, we can't add a new user.
 - Maybe we can add a new fonctionnality or page where the user can see or modify  his information like password.
-- Link the delete buttons on every page with the database as we can delete the date.
+- Link the delete buttons on every page with the database as we can delete the data.
+- We forgot to add the ability to specify the role and permission of each user.
