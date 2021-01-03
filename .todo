@@ -5,3 +5,4 @@
 - Maybe we can add a new fonctionnality or page where the user can see or modify  his information like password.
 - Link the delete buttons on every page with the database as we can delete the data.
 - We forgot to add the ability to specify the role and permission of each user.
+- I'm trying to add an account page where user can see and modify his information and password
