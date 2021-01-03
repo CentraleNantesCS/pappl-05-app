@@ -26,6 +26,7 @@ import { Redirect, Switch} from "react-router-dom";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import ListIcon from '@material-ui/icons/List';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 function App(props: { children: React.ReactNode }) {
   const { state, dispatch } = useStateContext();
@@ -85,14 +86,6 @@ function App(props: { children: React.ReactNode }) {
       path: "/users"
     }
   ]
-  const guestMenu = [
-
-    {
-      text: "Se connecter",
-      icon: LockOpenIcon,
-      path: "/login"
-    },
-  ]
 
   const theme = createMuiTheme({
     typography: {
@@ -104,19 +97,6 @@ function App(props: { children: React.ReactNode }) {
     <div className="App">
       <nav>
         <AppBar position="static" className="flex-1">
-            {/* {!state.isAuthenticated && (
-              <Toolbar style={{ background: '#045d93' }} className="flex">
-                <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
-                <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className="flex-1 text-4xl ">
-                  <Link to="/">EDT Centrale Nantes</Link>
-                </Typography>
-                <Button color="inherit" startIcon={<LockOpenIcon />}>
-                  <Link to="/login">Se connecter</Link>
-                </Button>
-              </Toolbar>
-            )} */}
             {state.isAuthenticated && (
                 <Toolbar style={{ background: '#045d93' }} className="flex">
                   <IconButton edge="start" color="inherit" aria-label="menu"  onClick={toggleDrawer}>
@@ -125,6 +105,9 @@ function App(props: { children: React.ReactNode }) {
                   <Typography variant="h6" className="flex-1 text-4xl ">
                     <Link to="/">EDT Centrale Nantes</Link>
                   </Typography>
+                  <Button color="inherit" onClick={logout} startIcon={<SettingsIcon /> }>
+                    <Link to="/account">Mon compte</Link>
+                  </Button>
                   <Button color="inherit" onClick={logout} startIcon={<ExitToApp /> }>
                     <Link to="/">Se déconnecter</Link>
                   </Button>
@@ -153,19 +136,6 @@ function App(props: { children: React.ReactNode }) {
               </ThemeProvider>
             )
           })}
-          {/* {!state.isAuthenticated  && guestMenu.map((menuItem) => {
-            const Icon = menuItem.icon
-            return (
-              <ThemeProvider theme={theme}>
-                <Link to={menuItem.path} key={menuItem.path}>
-                  <ListItem button key={menuItem.path}>
-                      {Icon && <ListItemIcon key={menuItem.path}><Icon /></ListItemIcon>}
-                    <ListItemText primary={menuItem.text} key={menuItem.path} />
-                  </ListItem>
-                </Link>
-              </ThemeProvider>
-            )
-          })} */}
         </List>
       </Drawer>
       <div className="flex flex-1 w-full h-full ">
