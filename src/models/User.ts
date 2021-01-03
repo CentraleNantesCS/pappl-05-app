@@ -6,6 +6,7 @@ export interface User {
   lastname: string;
   email: string;
   acronym: string;
+  password?: string
 }
 
 export const getConnectedUser = async () => {

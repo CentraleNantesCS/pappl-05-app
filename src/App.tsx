@@ -16,6 +16,7 @@ import Specialisations from './views/Specialisations';
 import Subjects from './views/Subjects';
 
 import { ReactQueryDevtools } from 'react-query-devtools'
+import Classes from './views/Classes';
 
 function App() {
   const { dispatch } = useStateContext();
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route path="/subjects">
             <Subjects/>
+          </Route>
+          <Route path="/promos">
+            <Classes/>
           </Route>
         </Switch>
       </MainLayout>

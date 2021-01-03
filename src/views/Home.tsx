@@ -4,11 +4,16 @@ import { useStateContext } from '../utils/state';
 import logo from '../img/ECN_Logo.png'
 import { Button } from '@material-ui/core';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import { User } from '../models/User';
 
 
 function Home() {
   const { state } = useStateContext();
-
+  const fullname = (user: User) => {
+    if(user)
+      return `${user.firstname} ${user.lastname}`
+    return ''
+  }
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-hero bg-cover">
       {!state.isAuthenticated && (
@@ -23,7 +28,7 @@ function Home() {
       )}
       {state.isAuthenticated && (
         <div className="flex-col w-6/12 h-auto justify-end items-center text-white text-center">
-          <h2 className="my-10 text-4xl">Bonjour <span style={{color:'#F9BE1B'}}>Anas Mazouni</span> !</h2>
+          <h2 className="my-10 text-4xl">Bonjour <span style={{ color: '#F9BE1B' }}>{fullname(state.user as User)}</span> !</h2>
           <p className=" my-10 text-2xl">Vous êtes connecté à votre espace</p>
         </div>
       )}

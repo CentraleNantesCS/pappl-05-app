@@ -1,15 +1,14 @@
 import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { useStateContext } from '../utils/state';
-import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@material-ui/data-grid';
+import React from 'react';
+import { DataGrid, ColDef,  ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useForm } from "react-hook-form";
 
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
-import { Subject } from '../models/Subject';
+import { Class } from '../models/Class';
 import SchoolIcon from '@material-ui/icons/School';
-import IconButton  from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -17,7 +16,7 @@ import { createMuiTheme } from "@material-ui/core";
 
 const queryCache = new QueryCache()
 
-function Subjects() {
+function Classes() {
   const Theme = createMuiTheme({
     palette: {
       primary: {
@@ -54,55 +53,56 @@ function Subjects() {
   };
 
 
-   // Cache
+  // Cache
   const cache = useQueryCache()
 
   // Queries
-  const subjectsQuery = useQuery('getSubjects', () =>
-    axios.get('/api/subjects').then(res =>
+  const classesQuery = useQuery('getClasses', () =>
+    axios.get('/api/classes').then(res =>
       res.data
     )
   )
 
-  const [addSubject] = useMutation(async ({ name, acronym }: Subject) => {
-    const res = await axios.post('/api/subjects', { name, acronym });
+  const [addClass] = useMutation(async ({ start_year, end_year }: Class) => {
+    const res = await axios.post('/api/classes', { start_year, end_year });
     return res.data;
   }, {
-      onSuccess: (data) => {
+    onSuccess: (data) => {
       handleCloseCreate()
       // Query Invalidations
-      cache.invalidateQueries('getSubjects')
+      cache.invalidateQueries('getClasses')
     },
   })
 
-  const [deleteSubject] = useMutation(async (id: number | string) => {
-    const res = await axios.delete(`/api/subjects/${id}`);
+  const [deleteClass] = useMutation(async (id: number | string) => {
+    const res = await axios.delete(`/api/classes/${id}`);
     return res.data;
   }, {
     onSuccess: (data) => {
       // Query Invalidations
-      cache.invalidateQueries('getSubjects')
+      cache.invalidateQueries('getClasses')
     },
   })
 
 
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data: Subject) => addSubject(data);
+  const onSubmit = (data: Class) => addClass(data);
 
   const columns: ColDef[] = [
-    { field: 'name', headerName: 'Matière', flex: 1, headerAlign: 'center', align: 'center' },
-    { field: 'acronym', headerName: 'Acronyme', width: 230, headerAlign: 'center', align: 'center' },
-    { field: 'actions', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
-      <ThemeProvider theme={Theme}>
-          <IconButton color="primary" onClick={() => deleteSubject(params.data.id)}>
+    { field: 'annee', headerName: 'Année Scolaire', flex: 1, valueFormatter: (params) => `${params.data.start_year}-${params.data.end_year}`, headerAlign: 'center', align: 'center' },
+    {
+      field: 'actions', headerName: 'Action', headerAlign: 'center', align: 'center', width: 120, renderCell: (params: ValueFormatterParams) => (
+        <ThemeProvider theme={Theme}>
+          <IconButton color="primary" onClick={() => deleteClass(params.data.id)}>
             <DeleteIcon />
           </IconButton>
-          <IconButton color = "secondary">
+          <IconButton color="secondary">
             <EditIcon />
           </IconButton>
-      </ThemeProvider>
+        </ThemeProvider>
 
-    )}
+      )
+    }
   ];
 
   return (
@@ -116,24 +116,24 @@ function Subjects() {
             aria-describedby="modal-description"
           >
             <div style={modalStyle} className="bg-white absolute py-6 px-6 w-1/2 rounded-sm">
-              <h2 id="modal-title" className="text-xl font-medium py-2">Ajouter une matière</h2>
+              <h2 id="modal-title" className="text-xl font-medium py-2">Ajouter une promo</h2>
               <p id="modal-description pb-4">
               </p>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-flow-row gap-4">
                   <div className="">
-                    <TextField required label="Nom de la matière" className="w-full" defaultValue="" name="name" inputRef={register({ required: true })} />
-                    {errors.name && <span>Ce champ est obligatoire</span>}
+                    <TextField required label="Start Year" className="w-full" defaultValue="" name="start_year" inputRef={register({ required: true })} />
+                    {errors.start_year && <span>Ce champ est obligatoire</span>}
                   </div>
                   <div className="">
-                    <TextField required label="Acronyme" className="w-full" defaultValue="" name="acronym" inputRef={register({ required: true })} />
-                    {errors.acronym && <span>Ce champ est obligatoire</span>}
+                    <TextField required label="End Year" className="w-full" defaultValue="" name="end_year" inputRef={register({ required: true })} />
+                    {errors.end_year && <span>Ce champ est obligatoire</span>}
                   </div>
                 </div>
                 <div className="flex flex-row mt-10">
                   <div className="flex-1"></div>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button color ="secondary" variant="contained" onClick={handleCloseCreate}>Annuler</Button>
+                    <Button color="secondary" variant="contained" onClick={handleCloseCreate}>Annuler</Button>
                     <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
                   </div>
                 </div>
@@ -144,24 +144,24 @@ function Subjects() {
             <div className="w-full flex flex-row">
               <div className="flex-1"></div>
               <Button variant="contained" color="secondary" startIcon={<AddCircleIcon />} onClick={handleOpenCreate}>
-                Ajouter une matière
+                Ajouter une promo
             </Button>
             </div>
             <div className="flex items-center	ml-4">
-              <SchoolIcon fontSize="large"/>
-              <h3 className="text-3xl font-medium ml-4">Matières :</h3>
+              <SchoolIcon fontSize="large" />
+              <h3 className="text-3xl font-medium ml-4">Promotions :</h3>
             </div>
             <CardContent className="pb-20">
-              {subjectsQuery.isLoading && <p>Loading...</p>}
-              {subjectsQuery.error && <p>An error has occurred: {subjectsQuery.error || 'Unknown'}</p>}
-              {subjectsQuery.data && <DataGrid autoHeight rows={subjectsQuery.data} columns={columns} pageSize={5} />}
+              {classesQuery.isLoading && <p>Loading...</p>}
+              {classesQuery.error && <p>An error has occurred: {classesQuery.error || 'Unknown'}</p>}
+              {classesQuery.data && <DataGrid autoHeight rows={classesQuery.data} columns={columns} pageSize={5} />}
             </CardContent>
           </Card>
         </Container>
       </ThemeProvider>
-      </ReactQueryCacheProvider>
+    </ReactQueryCacheProvider>
   );
 }
 
 
-export default Subjects;
+export default Classes;

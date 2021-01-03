@@ -8,9 +8,9 @@ import { useForm } from "react-hook-form";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon  from "@material-ui/icons/Delete";
 import { useQuery, QueryCache, ReactQueryCacheProvider, useMutation, useQueryCache } from 'react-query'
-import { Subject } from '../models/Subject';
-import LabelIcon from '@material-ui/icons/Label'
+ import LabelIcon from '@material-ui/icons/Label'
 import IconButton  from '@material-ui/core/IconButton';
+import { EventType } from '../models/EventType';
 
 const queryCache = new QueryCache()
 
@@ -29,23 +29,6 @@ function EventTypes() {
       fontFamily: 'Poppins'
     },
   })
-  const columns: ColDef[] = [
-    { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
-    { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
-    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
-        <div>
-          <ThemeProvider theme={Theme}>
-            <IconButton color ="primary">
-              <DeleteIcon />
-            </IconButton>
-            <IconButton color = "secondary">
-              <EditIcon />
-            </IconButton>
-          </ThemeProvider> 
-        </div>
-            
-  )}
-  ];
 
   function getModalStyle() {
     const top = 50;
@@ -79,7 +62,7 @@ function EventTypes() {
     )
   )
 
-  const [addSubject] = useMutation(async ({ name, acronym }: Subject) => {
+  const [addEventType] = useMutation(async ({ name, acronym }: EventType) => {
     const res = await axios.post('/api/eventtypes', { name, acronym });
     return res.data;
   }, {
@@ -90,9 +73,36 @@ function EventTypes() {
     },
   })
 
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data: Subject) => addSubject(data);
+  const [deleteEventType] = useMutation(async (id: number | string) => {
+    const res = await axios.delete(`/api/eventtypes/${id}`);
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getEventTypes')
+    },
+  })
 
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = (data: EventType) => addEventType(data);
+
+  const columns: ColDef[] = [
+    { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
+    { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
+    { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <ThemeProvider theme={Theme}>
+            <IconButton color ="primary" onClick={() => deleteEventType(params.data.id)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton color = "secondary">
+              <EditIcon />
+            </IconButton>
+          </ThemeProvider>
+        </div>
+
+  )}
+  ];
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
       <ThemeProvider theme={Theme}>
@@ -144,7 +154,7 @@ function EventTypes() {
             {eventTypesQuery.error && <p>An error has occurred: {eventTypesQuery.error || 'Unknown'}</p>}
             {eventTypesQuery.data && <DataGrid autoHeight rows={eventTypesQuery.data} columns={columns} pageSize={5} />}
           </CardContent>
-        </Card>  
+        </Card>
       </Container>
       </ThemeProvider>
       </ReactQueryCacheProvider>
