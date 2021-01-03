@@ -34,6 +34,7 @@ import { Subject } from '../models/Subject';
 import { EventType } from '../models/EventType';
 import { User } from '../models/User';
 import { getDate, getHours, isAfter, setHours, setMinutes } from 'date-fns'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 const queryCache = new QueryCache()
 
@@ -45,7 +46,19 @@ interface SchedulerAppointementType {
   text: string
   color: string
 }
-
+const Theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#045d93',
+    },
+    secondary: {
+      main: '#F9BE1B',
+    },
+  },
+  typography: {
+    fontFamily: 'Poppins'
+  },
+})
 const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) => {
   const [currentDate, setCurrentDate] = React.useState<SchedulerDateTime>(
     new Date()
@@ -262,6 +275,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
     }
 
     return (
+      <ThemeProvider theme={Theme}>
       <AppointmentForm.BasicLayout
         appointmentData={appointmentData}
         onFieldChange={onFieldChange}
@@ -315,11 +329,13 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
           onValueChange={onRemoteChange}
         />
       </AppointmentForm.BasicLayout>
+      </ThemeProvider>
     );
   };
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
+      <ThemeProvider theme={Theme}>
       <Paper className="h-full">
         {calendarQuery.isLoading && <p>Loading...</p>}
         {calendarQuery.error && <p>An error has occurred: {calendarQuery.error || 'Unknown'}</p>}
@@ -349,6 +365,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) 
             <Resources data={resources} />
           </Scheduler>}
       </Paper>
+      </ThemeProvider>
     </ReactQueryCacheProvider>
   );
 };

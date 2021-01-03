@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, Container, createMuiTheme, Modal, TextField, ThemeProvider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useStateContext } from '../utils/state';
 import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@material-ui/data-grid';
@@ -16,17 +16,32 @@ const queryCache = new QueryCache()
 
 function EventTypes() {
   const deleteType = (id: number | string) => {}
+  const Theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#045d93',
+      },
+      secondary: {
+        main: '#F9BE1B',
+      },
+    },
+    typography: {
+      fontFamily: 'Poppins'
+    },
+  })
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Type', width: 230, headerAlign: 'center', align: 'center' },
     { field: 'acronym', headerName: 'Acronyme', width: 150, headerAlign: 'center', align: 'center' },
     { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
         <div>
-          <IconButton color ="secondary">
-            <DeleteIcon />
-          </IconButton>
-          <IconButton color = "primary">
-            <EditIcon />
-          </IconButton>    
+          <ThemeProvider theme={Theme}>
+            <IconButton color ="primary">
+              <DeleteIcon />
+            </IconButton>
+            <IconButton color = "secondary">
+              <EditIcon />
+            </IconButton>
+          </ThemeProvider> 
         </div>
             
   )}
@@ -80,6 +95,7 @@ function EventTypes() {
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
+      <ThemeProvider theme={Theme}>
       <Container className="mt-10 ">
         <Modal
           open={open}
@@ -105,7 +121,7 @@ function EventTypes() {
               <div className="flex flex-row mt-10">
                 <div className="flex-1"></div>
                 <div className="grid grid-cols-2 gap-2">
-                  <Button variant="contained" onClick={handleClose}>Annuler</Button>
+                  <Button variant="contained" color="secondary" onClick={handleClose}>Annuler</Button>
                   <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
                 </div>
               </div>
@@ -128,8 +144,10 @@ function EventTypes() {
             {eventTypesQuery.error && <p>An error has occurred: {eventTypesQuery.error || 'Unknown'}</p>}
             {eventTypesQuery.data && <DataGrid autoHeight rows={eventTypesQuery.data} columns={columns} pageSize={5} />}
           </CardContent>
-        </Card>
-      </Container></ReactQueryCacheProvider>
+        </Card>  
+      </Container>
+      </ThemeProvider>
+      </ReactQueryCacheProvider>
   );
 }
 

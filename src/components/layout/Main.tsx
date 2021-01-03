@@ -126,9 +126,9 @@ function App(props: { children: React.ReactNode }) {
             const Icon = menuItem.icon
             return (
               <ThemeProvider theme={theme}>
-                <Link  className="hover:text-blue-700" to={menuItem.path} key={menuItem.text}>
-                  <ListItem className="hover:text-blue-700" button key={menuItem.text} >
-                      {Icon && <ListItemIcon className="hover:text-blue-700"><Icon/></ListItemIcon>}
+                <Link  to={menuItem.path} key={menuItem.text}>
+                  <ListItem  button key={menuItem.text} >
+                      {Icon && <ListItemIcon ><Icon /></ListItemIcon>}
                     <ListItemText primary={menuItem.text} />
                   </ListItem>
                   {menuItem?.divider && <div className="mx-20"><Divider variant="middle"/></div>}

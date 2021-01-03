@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, Container, createMuiTheme, Modal, TextField, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import { DataGrid, ColDef, ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
@@ -20,18 +20,33 @@ const queryCache = new QueryCache()
 
 
 function Specialisations() {
+  const Theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#045d93',
+      },
+      secondary: {
+        main: '#F9BE1B',
+      },
+    },
+    typography: {
+      fontFamily: 'Poppins'
+    },
+  })
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Option', width: 250, headerAlign: 'center', align: 'center'},
     { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center'},
     { field: 'subjects', headerName: 'Matières', flex:1 , valueFormatter: ({ value }) => value ? (value as Subject[]).map((subject: Subject) => subject.name).join(' | ') : "" , headerAlign: 'center', align: 'center' },
     { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
       <div>
-        <IconButton color ="secondary">
-          <DeleteIcon />
-        </IconButton>
-        <IconButton color = "primary">
-          <EditIcon />
-        </IconButton>    
+        <ThemeProvider theme={Theme}>
+          <IconButton color ="primary">
+            <DeleteIcon />
+          </IconButton>
+          <IconButton color = "secondary">
+            <EditIcon />
+          </IconButton>    
+        </ThemeProvider>
       </div>
     )}
   ];
@@ -98,6 +113,7 @@ function Specialisations() {
   //
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
+      <ThemeProvider theme={Theme}>
       <Container className="mt-10 ">
         <Modal
           open={open}
@@ -136,7 +152,7 @@ function Specialisations() {
                 <div className="flex flex-row mt-10">
                   <div className="flex-1"></div>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button variant="contained" onClick={handleClose}>Annuler</Button>
+                    <Button variant="contained" color="secondary" onClick={handleClose}>Annuler</Button>
                     <Button variant="contained" type="submit" color="primary">Enregistrer</Button>
                   </div>
                 </div>
@@ -164,6 +180,7 @@ function Specialisations() {
             </CardContent>
         </Card>
       </Container>
+      </ThemeProvider>
     </ReactQueryCacheProvider>
   );
 }

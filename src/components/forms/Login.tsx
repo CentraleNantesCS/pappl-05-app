@@ -73,7 +73,7 @@ export default function Login() {
         <div className="mt-1 rounded-md shadow-sm">
           <input type="email" ref={register({ required: true })}  className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" name="email" id="email" placeholder="Email" />
         </div>
-        {errors.email && <span className="mt-2 text-sm text-red-600">Email is required</span>}
+        {errors.email && <span className="mt-2 text-sm text-red-600">L'email est obligatoire</span>}
 
         {!showForgotPass &&
           <div className="mt-6">
@@ -83,7 +83,7 @@ export default function Login() {
             <div className="mt-1 rounded-md shadow-sm">
               <input ref={register({ required: true })} autoFocus type="password" className="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" name="password" id="password" placeholder="Mot de passe" />
             </div>
-            {errors.password && <span className="mt-2 text-sm text-red-600">Password is required</span>}
+            {errors.password && <span className="mt-2 text-sm text-red-600">Mot de passe obligaoire</span>}
           </div>
         }
 

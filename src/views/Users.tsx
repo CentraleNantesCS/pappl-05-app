@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Container, Modal, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, Container, createMuiTheme, Modal, TextField, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import { DataGrid, ColDef, ValueGetterParams, ValueFormatterParams } from '@material-ui/data-grid';
 import axios from '../utils/axios';
@@ -22,7 +22,19 @@ function Users() {
       transform: `translate(-${top}%, -${left}%)`
     };
   }
-
+  const Theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#045d93',
+      },
+      secondary: {
+        main: '#F9BE1B',
+      },
+    },
+    typography: {
+      fontFamily: 'Poppins'
+    },
+  })
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
@@ -50,12 +62,14 @@ function Users() {
     { field: 'email', headerName: 'Email', width: 300, headerAlign: 'center', align: 'center' },
     { field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center',width: 120, renderCell: (params: ValueFormatterParams) => (
       <div>
-        <IconButton color ="secondary">
-          <DeleteIcon />
-        </IconButton>
-        <IconButton color = "primary">
-          <EditIcon />
-        </IconButton>    
+        <ThemeProvider theme={Theme}>
+          <IconButton color ="primary">
+            <DeleteIcon />
+          </IconButton>
+          <IconButton color = "secondary">
+            <EditIcon />
+          </IconButton>
+        </ThemeProvider>    
       </div>
     )}
   ];
@@ -70,6 +84,7 @@ function Users() {
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
+      <ThemeProvider theme={Theme}>
       <Container className="mt-10 ">
         <Modal
           open={open}
@@ -94,7 +109,7 @@ function Users() {
             <div className="flex flex-row mt-10">
               <div className="flex-1"></div>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="contained" onClick={handleClose}>Annuler</Button>
+                <Button variant="contained" color="secondary" onClick={handleClose}>Annuler</Button>
                 <Button variant="contained" color="primary">
                   Enregistrer
               </Button>
@@ -120,6 +135,7 @@ function Users() {
           </CardContent>
         </Card>
       </Container>
+      </ThemeProvider>
     </ReactQueryCacheProvider>
   );
 }
