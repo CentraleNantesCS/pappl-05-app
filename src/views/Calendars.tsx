@@ -59,7 +59,7 @@ function Calendars() {
 
   const columns: ColDef[] = [
     { field: 'classe', headerName: 'Année scolaire', width: 200, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
-    { field: 'specialisation', headerName: 'Option', width: 350, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value as Specialisation).name },
+    { field: 'specialisation', headerName: 'Option', width: 350, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value as Specialisation)?.name },
     {
       field: 'open', headerName: 'Action', width: 350, headerAlign: 'center', align: 'center',  renderCell: (params: ValueFormatterParams) => (
         <div>
