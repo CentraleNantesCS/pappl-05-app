@@ -47,36 +47,7 @@ function Users() {
   const handleClose = () => {
     setOpen(false);
   };
-  const columns: ColDef[] = [
-    {
-      field: 'fullName',
-      headerName: 'Nom et Prénom',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      headerAlign: 'center',
-      align: 'center',
-      valueGetter: (params: ValueGetterParams) =>
-        `${params.getValue('firstname') || ''} ${params.getValue('lastname') || ''
-        }`,
-    },
-    { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center' },
-    { field: 'email', headerName: 'Email', width: 300, headerAlign: 'center', align: 'center' },
-    {
-      field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center', width: 120, renderCell: (params: ValueFormatterParams) => (
-        <div>
-          <ThemeProvider theme={Theme}>
-            <IconButton color="primary">
-              <DeleteIcon />
-            </IconButton>
-            <IconButton color="secondary">
-              <EditIcon />
-            </IconButton>
-          </ThemeProvider>
-        </div>
-      )
-    }
-  ];
+
 
   // Queries
   const usersQuery = useQuery('getUsers', () =>
@@ -105,6 +76,47 @@ function Users() {
     addUser(data)
   };
 
+
+  const [deleteUser] = useMutation(async (id: number | string) => {
+    const res = await axios.delete(`/api/users/${id}`);
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getUsers')
+    },
+  })
+  //
+  const columns: ColDef[] = [
+    {
+      field: 'fullName',
+      headerName: 'Nom et Prénom',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (params: ValueGetterParams) =>
+        `${params.getValue('firstname') || ''} ${params.getValue('lastname') || ''
+        }`,
+    },
+    { field: 'acronym', headerName: 'Acronyme', width: 120, headerAlign: 'center', align: 'center' },
+    { field: 'email', headerName: 'Email', width: 300, headerAlign: 'center', align: 'center' },
+    {
+      field: 'id2', headerName: 'Action', headerAlign: 'center', align: 'center', width: 120, renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <ThemeProvider theme={Theme}>
+            <IconButton color="primary" onClick={() => deleteUser(params.data.id)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton color="secondary">
+              <EditIcon />
+            </IconButton>
+          </ThemeProvider>
+        </div>
+      )
+    }
+  ];
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
       <ThemeProvider theme={Theme}>

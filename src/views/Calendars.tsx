@@ -57,44 +57,6 @@ function Calendars() {
     window.open(`${process.env.REACT_APP_API_URL}api/calendars/${id}/export`)
   }
 
-  const columns: ColDef[] = [
-    { field: 'classe', headerName: 'Année scolaire', width: 200, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
-    { field: 'specialisation', headerName: 'Option', width: 350, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value as Specialisation)?.name },
-    {
-      field: 'open', headerName: 'Action', width: 350, headerAlign: 'center', align: 'center',  renderCell: (params: ValueFormatterParams) => (
-        <div>
-          <ThemeProvider theme={Theme}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            style={{ marginLeft: 16 }}
-            onClick={() => { openCalendar(params.data.id) }}
-          >
-            Ouvrir
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
-            style={{ marginLeft: 16 }}
-            onClick={() => { exportCalendar(params.data.id) }}
-          >
-            Exporter
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            style={{ marginLeft: 16 }}
-            onClick={() => {}}
-          >
-            Supprimer
-          </Button>
-          </ThemeProvider>
-        </div>
-      )
-    }
-  ];
 
   // Queries
   const calendarsQuery = useQuery('getCalendars', () =>
@@ -150,7 +112,56 @@ function Calendars() {
   const animatedComponents = makeAnimated();
   const { register, control, handleSubmit, errors } = useForm();
   const onSubmit = (data: any) => addCalendar(data);
+
+  const [deleteCalendar] = useMutation(async (id: number | string) => {
+    const res = await axios.delete(`/api/calendars/${id}`);
+    return res.data;
+  }, {
+    onSuccess: (data) => {
+      // Query Invalidations
+      cache.invalidateQueries('getCalendars')
+    },
+  })
   //
+
+  const columns: ColDef[] = [
+    { field: 'classe', headerName: 'Année scolaire', width: 200, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => `${(value as Class).start_year} - ${(value as Class).end_year}` },
+    { field: 'specialisation', headerName: 'Option', width: 350, headerAlign: 'center', align: 'center', valueFormatter: ({ value }) => (value as Specialisation)?.name },
+    {
+      field: 'open', headerName: 'Action', width: 350, headerAlign: 'center', align: 'center',  renderCell: (params: ValueFormatterParams) => (
+        <div>
+          <ThemeProvider theme={Theme}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { openCalendar(params.data.id) }}
+          >
+            Ouvrir
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => { exportCalendar(params.data.id) }}
+          >
+            Exporter
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            style={{ marginLeft: 16 }}
+            onClick={() => deleteCalendar(params.data.id)}
+          >
+            Supprimer
+          </Button>
+          </ThemeProvider>
+        </div>
+      )
+    }
+  ];
 
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
